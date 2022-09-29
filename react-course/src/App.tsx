@@ -1,7 +1,7 @@
 import Header from 'components/header';
 import { AboutPage, MainPage, NotFoundPage } from 'components/pages';
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 import './App.scss';
 
@@ -13,7 +13,8 @@ function App() {
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="about" element={<AboutPage />} />
-          <Route path="*" element={<NotFoundPage />} />
+          <Route path="/404" element={<NotFoundPage />} />
+          <Route path="*" element={<Navigate to={'/404'} replace />} />
         </Routes>
       </main>
     </>
