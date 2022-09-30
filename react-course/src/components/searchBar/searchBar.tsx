@@ -2,10 +2,15 @@ import React from 'react';
 
 import './searchBar.scss';
 
-const SearchBar = () => {
+type SearchBarProps = {
+  onInput: (e: React.FormEvent<HTMLInputElement>) => void;
+  value: string;
+};
+
+const SearchBar = ({ onInput, value }: SearchBarProps) => {
   return (
     <form>
-      <input className="search-bar" type="search" name="search" />
+      <input onInput={onInput} value={value} className="search-bar" type="search" name="search" />
     </form>
   );
 };

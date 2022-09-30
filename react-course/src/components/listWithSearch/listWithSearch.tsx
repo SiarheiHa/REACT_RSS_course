@@ -7,19 +7,33 @@ import './listWithSearch.scss';
 
 type ListWithSearchState = {
   products: Product[];
+  searchValue: string;
 };
 
 class ListWithSearch extends Component<Record<string, never>, ListWithSearchState> {
   state = {
     products: data,
+    searchValue: '',
+  };
+
+  componentDidMount() {
+    const searchValue = localStorage.getItem('search');
+    if (searchValue) this.setState({ searchValue });
+  }
+
+  componentWillUnmount() {
+    localStorage.setItem('search', this.state.searchValue);
+  }
+
+  onInput = (e: React.FormEvent<HTMLInputElement>) => {
+    this.setState({ searchValue: e.currentTarget.value });
   };
 
   render() {
-    const { products } = this.state;
+    const { products, searchValue } = this.state;
     return (
       <div className="list-with-search">
-        <p>ListWithSearch</p>
-        <SearchBar />
+        <SearchBar onInput={this.onInput} value={searchValue} />
         <ItemList items={products} />
       </div>
     );

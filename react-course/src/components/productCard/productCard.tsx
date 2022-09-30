@@ -1,5 +1,5 @@
-import { Product } from 'data/data';
 import React, { Component } from 'react';
+import { Product } from 'data/data';
 
 import './productCard.scss';
 import favoriteIcon from './favoriteIcon.svg';
