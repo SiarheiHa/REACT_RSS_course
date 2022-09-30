@@ -19,10 +19,11 @@ $footer-gradient-background: #211f20;
   background-color: $color-light-s;
   border-radius: 1rem;
   padding: 1.5rem 1rem;
+  margin: 1rem;
   font-size: 2rem;
   letter-spacing: 0.06em;
   color: $color-dark-l;
-  width: 39rem;
+  width: 30rem;
   p {
     margin: 0;
     padding: 0.5rem 0;
@@ -44,7 +45,7 @@ $footer-gradient-background: #211f20;
   }
 }
 .product__img-wrapper {
-  max-width: 90%;
+  max-width: 50%;
   flex-grow: 1;
   display: flex;
   align-items: center;

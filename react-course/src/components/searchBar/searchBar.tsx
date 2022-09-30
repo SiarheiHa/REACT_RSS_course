@@ -1,9 +1,11 @@
 import React from 'react';
 
+import './searchBar.scss';
+
 const SearchBar = () => {
   return (
     <form>
-      <input type="search" name="search" />
+      <input className="search-bar" type="search" name="search" />
     </form>
   );
 };

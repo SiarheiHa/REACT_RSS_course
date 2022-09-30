@@ -15,7 +15,7 @@ type ProductCardProps = {
 
 class ProductCard extends Component<ProductCardProps, ProductCardState> {
   render() {
-    const { set, images, price, availability, ages, pieces, rating } = this.props.product;
+    const { set, images, price, ages, pieces, rating } = this.props.product;
     return (
       <div className="product">
         <img className="favorite-icon" src={favoriteIcon} alt="favorite icon" width="40" />
@@ -24,7 +24,6 @@ class ProductCard extends Component<ProductCardProps, ProductCardState> {
           <img className="product__img" src={images[0]} alt="product image" />
         </div>
         <p className="product__price">{`$${price}`}</p>
-        <p className="product__availability">{availability}</p>
         <p className="product__ages">{`age:${ages}`}</p>
         <p className="product__pieces">{`pieces:${pieces}`}</p>
         <p className="product__rating">{`rating:${Number(rating).toFixed(2)}`}</p>
