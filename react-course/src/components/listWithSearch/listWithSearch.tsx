@@ -8,12 +8,16 @@ import './listWithSearch.scss';
 type ListWithSearchState = {
   products: Product[];
   searchValue: string;
+  cart: Product[];
+  favorites: Product[];
 };
 
 class ListWithSearch extends Component<Record<string, never>, ListWithSearchState> {
   state = {
     products: data,
     searchValue: '',
+    cart: [],
+    favorites: [],
   };
 
   componentDidMount() {
@@ -29,17 +33,44 @@ class ListWithSearch extends Component<Record<string, never>, ListWithSearchStat
     this.setState({ searchValue: e.currentTarget.value });
   };
 
+  onAddToCart = (product: Product) => {
+    this.setState(({ cart }) => {
+      if (cart.includes(product)) {
+        return { cart: cart.filter((item) => item !== product) };
+      }
+      return { cart: [...cart, product] };
+    });
+  };
+
+  onClickFavorite = (product: Product) => {
+    console.log('onClickFavorite');
+    this.setState(({ favorites }) => {
+      if (favorites.includes(product)) {
+        return { favorites: favorites.filter((item) => item !== product) };
+      }
+      return { favorites: [...favorites, product] };
+    });
+  };
+
   filterBySearch(products: Product[]) {
-    return products.filter(({ set }) => set.includes(this.state.searchValue));
+    return products.filter(({ set }) =>
+      set.toLowerCase().includes(this.state.searchValue.toLowerCase())
+    );
   }
 
   render() {
-    const { products, searchValue } = this.state;
+    const { products, searchValue, cart, favorites } = this.state;
     const itemsToDraw = this.filterBySearch(products);
     return (
       <div className="list-with-search">
         <SearchBar onInput={this.onInput} value={searchValue} />
-        <ItemList items={itemsToDraw} />
+        <ItemList
+          items={itemsToDraw}
+          cart={cart}
+          favorites={favorites}
+          onAddToCart={this.onAddToCart}
+          onClickFavorite={this.onClickFavorite}
+        />
       </div>
     );
   }
