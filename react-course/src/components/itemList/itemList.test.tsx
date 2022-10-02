@@ -1,11 +1,10 @@
 import { render, screen } from '@testing-library/react';
-import { debug } from 'console';
 import React from 'react';
 import ItemList from './itemList';
 
 const testItems = [
   {
-    _id: '61df944eb226bd9df3bb4648',
+    _id: '1',
     set: 'TEST The Razor Crest',
     item_id: 752927529275292,
     reviews: 134,
@@ -21,7 +20,7 @@ const testItems = [
     __v: 0,
   },
   {
-    _id: '61df944eb226bd9df3bb4648',
+    _id: '2',
     set: 'TEST1 The Razor Crest',
     item_id: 752927529275292,
     reviews: 134,
@@ -37,7 +36,7 @@ const testItems = [
     __v: 0,
   },
   {
-    _id: '61df944eb226bd9df3bb4648',
+    _id: '3',
     set: 'TEST2 The Razor Crest',
     item_id: 752927529275292,
     reviews: 134,
@@ -56,7 +55,6 @@ const testItems = [
 
 describe('ItemList', () => {
   it('item list renders', () => {
-    debug();
     render(
       <ItemList
         items={testItems}
