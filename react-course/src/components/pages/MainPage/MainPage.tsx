@@ -1,4 +1,4 @@
-import ListWithSearch from 'components/listWithSearch';
+import ListWithSearch from 'components/ListWithSearch';
 import React from 'react';
 
 const MainPage = () => {

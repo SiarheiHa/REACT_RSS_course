@@ -1,2 +1,1 @@
-import ListWithSearch from './listWithSearch';
-export default ListWithSearch;
+export { default } from './ListWithSearch';

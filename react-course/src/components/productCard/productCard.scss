@@ -64,6 +64,10 @@ $footer-gradient-background: #211f20;
 .favorite-icon {
   display: block;
   filter: invert(32%) sepia(8%) saturate(12%) hue-rotate(347deg) brightness(95%) contrast(88%);
+  cursor: pointer;
+  &:hover {
+    filter: none;
+  }
   &_active {
     filter: none;
   }

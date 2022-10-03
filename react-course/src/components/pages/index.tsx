@@ -1,5 +1,5 @@
-import AboutPage from './about';
-import MainPage from './main';
-import NotFoundPage from './notfound';
+import AboutPage from './AboutPage';
+import MainPage from './MainPage';
+import NotFoundPage from './NotFoundPage';
 
 export { AboutPage, MainPage, NotFoundPage };

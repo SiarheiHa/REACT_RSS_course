@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import React from 'react';
-import ItemList from './itemList';
+import ItemList from './ItemList';
 
 const testItems = [
   {

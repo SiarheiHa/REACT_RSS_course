@@ -1,18 +1,6 @@
-export interface Product {
-  _id: string;
-  set: string;
-  item_id: number;
-  reviews: number | null;
-  rating: string;
-  availability: string;
-  price: number;
-  images: string[];
-  ages: string;
-  pieces: number;
-  __v: number;
-}
+import { Product } from 'types/types';
 
-export const data: Product[] = [
+const data: Product[] = [
   {
     _id: '61df944eb226bd9df3bb4648',
     set: 'The Razor Crest',
@@ -677,3 +665,5 @@ export const data: Product[] = [
     __v: 0,
   },
 ];
+
+export default data;

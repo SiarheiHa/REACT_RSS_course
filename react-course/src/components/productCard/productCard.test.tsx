@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
-import ProductCard from './productCard';
+import ProductCard from './ProductCard';
 
 const testProduct = {
   _id: '61df944eb226bd9df3bb4648',

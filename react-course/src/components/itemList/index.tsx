@@ -1,2 +1,1 @@
-import ItemList from './itemList';
-export default ItemList;
+export { default } from './ItemList';

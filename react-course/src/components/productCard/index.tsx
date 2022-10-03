@@ -1,2 +1,1 @@
-import ProductCard from './productCard';
-export default ProductCard;
+export { default } from './ProductCard';

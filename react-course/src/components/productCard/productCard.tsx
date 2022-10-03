@@ -1,16 +1,7 @@
 import React from 'react';
-import { Product } from 'data/data';
-
-import './productCard.scss';
+import { ProductCardProps } from '../../types/types';
+import './ProductCard.scss';
 import favoriteIcon from './favoriteIcon.svg';
-
-type ProductCardProps = {
-  product: Product;
-  onAddToCart: (item: Product) => void;
-  onClickFavorite: (item: Product) => void;
-  isInCart: boolean;
-  isInFavorites: boolean;
-};
 
 function ProductCard(props: ProductCardProps) {
   const { set, images, price, ages, pieces, rating } = props.product;

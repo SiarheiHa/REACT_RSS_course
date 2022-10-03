@@ -1,16 +1,11 @@
-import ItemList from 'components/itemList';
-import SearchBar from 'components/searchBar';
-import { data, Product } from 'data/data';
+import ItemList from 'components/ItemList';
+import SearchBar from 'components/SearchBar';
+import data from '../../data';
+import { ListWithSearchState, Product } from 'types/types';
+
 import React, { Component } from 'react';
 
-import './listWithSearch.scss';
-
-type ListWithSearchState = {
-  products: Product[];
-  searchValue: string;
-  cart: Product[];
-  favorites: Product[];
-};
+import './ListWithSearch.scss';
 
 class ListWithSearch extends Component<Record<string, never>, ListWithSearchState> {
   state = {
@@ -43,7 +38,6 @@ class ListWithSearch extends Component<Record<string, never>, ListWithSearchStat
   };
 
   onClickFavorite = (product: Product) => {
-    console.log('onClickFavorite');
     this.setState(({ favorites }) => {
       if (favorites.includes(product)) {
         return { favorites: favorites.filter((item) => item !== product) };

@@ -1,11 +1,6 @@
 import React from 'react';
-
-import './searchBar.scss';
-
-type SearchBarProps = {
-  onInput: (e: React.FormEvent<HTMLInputElement>) => void;
-  value: string;
-};
+import { SearchBarProps } from 'types/types';
+import './SearchBar.scss';
 
 const SearchBar = ({ onInput, value }: SearchBarProps) => {
   return (

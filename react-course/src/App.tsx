@@ -1,4 +1,4 @@
-import Header from 'components/header';
+import Header from 'components/Header';
 import { AboutPage, MainPage, NotFoundPage } from 'components/pages';
 import React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';

@@ -1,16 +1,8 @@
 import React from 'react';
-import ProductCard from 'components/productCard';
-import { Product } from 'data/data';
+import ProductCard from 'components/ProductCard';
+import { ItemListProps } from '../../types/types';
 
-import './itemList.scss';
-
-type ItemListProps = {
-  items: Product[];
-  cart: Product[];
-  favorites: Product[];
-  onAddToCart: (item: Product) => void;
-  onClickFavorite: (item: Product) => void;
-};
+import './ItemList.scss';
 
 const ItemList = ({ items, cart, favorites, onAddToCart, onClickFavorite }: ItemListProps) => {
   return (
