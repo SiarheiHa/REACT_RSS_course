@@ -2,10 +2,15 @@ header {
   font-size: 2.8rem;
   text-align: end;
   border-bottom: 2px solid #000000;
+  margin: 2rem 0;
   a {
+    text-decoration: none;
+    margin: 1rem;
     padding: 0 1rem;
+    color: inherit;
+    border-radius: 4px;
   }
   .active {
-    background-color: aqua;
+    background-color: #fafafa;
   }
 }
