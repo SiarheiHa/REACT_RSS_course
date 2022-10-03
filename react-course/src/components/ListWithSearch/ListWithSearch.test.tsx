@@ -18,25 +18,32 @@ class LocalStorageMock {
     this.store = {};
   }
 
-  getItem = jest.fn((key: string) => {
+  getItem(key: string) {
     return this.store[key] || null;
-  });
+  }
 
-  setItem = jest.fn(() => (key: string, value: string) => {
+  setItem(key: string, value: string) {
     this.store[key] = String(value);
-  });
+    console.log(this.store);
+  }
 
   removeItem(key: string) {
     delete this.store[key];
   }
 }
 
+const localStorageMock = new LocalStorageMock();
+
 describe('ListWithSearch', () => {
+  beforeAll(() => {
+    Object.defineProperty(window, 'localStorage', {
+      value: localStorageMock,
+    });
+  });
+
   beforeEach(() => {
     localStorage.clear();
   });
-
-  localStorage = new LocalStorageMock();
 
   it('ListWithSearch renders', () => {
     render(<ListWithSearch />);
