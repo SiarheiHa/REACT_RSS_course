@@ -64,6 +64,6 @@ describe('ItemList', () => {
         onClickFavorite={jest.fn()}
       />
     );
-    expect(screen.getAllByRole('generic').length).toEqual(8);
+    expect(screen.getAllByRole('button').length).toEqual(3);
   });
 });
