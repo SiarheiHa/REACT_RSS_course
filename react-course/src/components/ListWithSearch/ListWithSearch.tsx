@@ -18,11 +18,18 @@ class ListWithSearch extends Component<Record<string, never>, ListWithSearchStat
   componentDidMount() {
     const searchValue = localStorage.getItem('search');
     if (searchValue) this.setState({ searchValue });
+    window.addEventListener('beforeunload', this.setSearchValue);
   }
 
   componentWillUnmount() {
-    localStorage.setItem('search', this.state.searchValue);
+    console.log('componentWillUnmount');
+    this.setSearchValue();
+    window.removeEventListener('beforeunload', this.setSearchValue);
   }
+
+  setSearchValue = () => {
+    localStorage.setItem('search', this.state.searchValue);
+  };
 
   onInput = (e: React.FormEvent<HTMLInputElement>) => {
     this.setState({ searchValue: e.currentTarget.value });
