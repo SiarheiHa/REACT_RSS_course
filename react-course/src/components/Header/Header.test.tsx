@@ -10,6 +10,6 @@ describe('Header', () => {
         <Header />
       </BrowserRouter>
     );
-    expect(screen.getAllByRole('link').length).toEqual(3);
+    expect(screen.getAllByRole('link').length).toEqual(4);
   });
 });

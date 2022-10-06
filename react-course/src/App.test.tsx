@@ -11,7 +11,7 @@ describe('App', () => {
         <App />
       </BrowserRouter>
     );
-    expect(screen.getAllByRole('link').length).toEqual(3);
+    expect(screen.getAllByRole('link').length).toEqual(4);
   });
 
   it('Link to About page works', () => {
