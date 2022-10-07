@@ -1,14 +1,35 @@
 import React from 'react';
+import { FormState } from 'types/types';
 
 import './Form.scss';
 
-class Form extends React.Component {
+class Form extends React.Component<Record<string, never>, FormState> {
+  name: React.RefObject<HTMLInputElement>;
+
+  constructor(props: Record<string, never>) {
+    super(props);
+    this.name = React.createRef();
+  }
+
+  state = {
+    isSubmitDisabled: true,
+  };
+
+  onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    console.log('onSubmit', e);
+    e.preventDefault();
+  };
+
+  onChange = (e: React.FormEvent<HTMLInputElement>) => {
+    console.log('onChange', e);
+  };
+
   render() {
     return (
-      <form className="form-page__form">
+      <form className="form-page__form" onSubmit={this.onSubmit}>
         <label>
           <span className="label__title">name</span>
-          <input type="text" name="name" />
+          <input type="text" name="name" ref={this.name} onChange={this.onChange} />
         </label>
 
         <label>
@@ -23,7 +44,8 @@ class Form extends React.Component {
 
         <label>
           <span className="label__title">location</span>
-          <select name="location">
+          <select name="location" defaultValue={''}>
+            <option value="" disabled></option>
             <option>country1</option>
             <option>country2</option>
             <option>country3</option>
@@ -35,7 +57,7 @@ class Form extends React.Component {
 
         <label>
           <span className="label__title">Are you agree?</span>
-          <input type="checkbox" name="agree-checkbox" />
+          <input type="checkbox" name="checkbox" />
         </label>
 
         <label className="switcher">

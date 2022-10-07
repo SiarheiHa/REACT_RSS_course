@@ -39,3 +39,7 @@ export type SearchBarProps = {
   onInput: (e: React.FormEvent<HTMLInputElement>) => void;
   value: string;
 };
+
+export type FormState = {
+  isSubmitDisabled: boolean;
+};
