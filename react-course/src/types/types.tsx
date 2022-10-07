@@ -40,6 +40,28 @@ export type SearchBarProps = {
   value: string;
 };
 
+// Form
+
 export type FormState = {
   isSubmitDisabled: boolean;
+};
+
+export enum InputNames {
+  name = 'name',
+  surname = 'surname',
+  birthday = 'birthday',
+  location = 'location',
+  checkbox = 'checkbox',
+  switcher = 'switcher',
+  file = 'file',
+}
+
+export type FormRefs = {
+  [InputNames.name]: React.RefObject<HTMLInputElement>;
+  [InputNames.surname]: React.RefObject<HTMLInputElement>;
+  [InputNames.birthday]: React.RefObject<HTMLInputElement>;
+  [InputNames.location]: React.RefObject<HTMLSelectElement>;
+  [InputNames.checkbox]: React.RefObject<HTMLInputElement>;
+  [InputNames.switcher]: React.RefObject<HTMLInputElement>;
+  [InputNames.file]: React.RefObject<HTMLInputElement>;
 };
