@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormRefs, FormState, InputName } from 'types/types';
+import { FormRefs, FormState, InputErrors, InputName } from 'types/types';
 
 import './Form.scss';
 
@@ -40,6 +40,9 @@ class Form extends React.Component<Record<string, never>, FormState> {
   onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     console.log('onSubmit', e);
     e.preventDefault();
+    this.validateForm();
+    console.log(this.hasFormErrors());
+
     // if (this.hasFormErrors()) {
     //   this.setState({ isSubmitDisabled: true });
     // }
@@ -54,12 +57,20 @@ class Form extends React.Component<Record<string, never>, FormState> {
     // сделать какую-то проверку на InputName
     const name = e.currentTarget.name as InputName;
 
+    const toggleSubmit = () => {
+      console.log('foo' + !this.hasFormErrors());
+      if (!this.hasFormErrors()) {
+        console.log('foo2' + !this.hasFormErrors());
+        this.setState({ isSubmitDisabled: false });
+      }
+    };
+
     if (this.state.inputErrors[name]) {
       this.setState(({ inputErrors }) => {
         return {
           inputErrors: { ...inputErrors, [name]: false },
         };
-      });
+      }, toggleSubmit);
     }
 
     if (!this.hasFormErrors()) {
@@ -67,11 +78,38 @@ class Form extends React.Component<Record<string, never>, FormState> {
     }
   };
 
-  validateInputValue(name: InputName) {
+  validateForm() {
+    const newInputErrors = inputNames.reduce((acc: InputErrors, name) => {
+      acc[name] = !this.isInputValueValid(name);
+      return acc;
+    }, {});
+
+    this.setState(
+      {
+        inputErrors: newInputErrors,
+        isSubmitDisabled: true,
+      },
+      () => console.log(this.hasFormErrors())
+    );
+
+    console.log(this.hasFormErrors());
+    // if (this.hasFormErrors()) {
+    //   console.log('есть ошибки кнопка задизеблена');
+    //   this.setState({ isSubmitDisabled: true });
+    //   // disable submit
+    // } else {
+    //   //TODO
+    //   // логика создания карточки
+    //   // очистить FormErrors
+    //   // очистить values
+    // }
+  }
+
+  isInputValueValid(name: InputName) {
     const element = this.formRefs[name].current;
     if (!element) return;
     const value = element.value;
-    let isError: boolean;
+    // let isError: boolean;
     // if (element instanceof HTMLInputElement) {
     //   const checked = element.checked;
     //   // console.log(cheked);
@@ -79,10 +117,10 @@ class Form extends React.Component<Record<string, never>, FormState> {
     console.log(name);
     switch (name) {
       case InputName.name:
-        isError = value.length < 2;
+        return value.length > 1;
         break;
       case InputName.surname:
-        isError = value.length < 2;
+        return value.length > 1;
         break;
       // case InputName.birthday:
       // case InputName.location:
@@ -90,17 +128,20 @@ class Form extends React.Component<Record<string, never>, FormState> {
       // case InputName.switcher:
       // case InputName.file:
       default:
-        return;
+        return true;
     }
 
-    if (this.state.inputErrors[name] === isError) return;
+    // if (this.state.inputErrors[name] === isError) return;
 
-    this.setState(({ inputErrors }) => {
-      const newInputErrors = { ...inputErrors, [name]: isError };
-      return {
-        inputErrors: { ...newInputErrors },
-      };
-    });
+    // this.setState(
+    //   ({ inputErrors }) => {
+    //     const newInputErrors = { ...inputErrors, [name]: isError };
+    //     return {
+    //       inputErrors: { ...newInputErrors },
+    //     };
+    //   },
+    //   () => console.log(this.hasFormErrors())
+    // );
   }
 
   hasFormErrors() {

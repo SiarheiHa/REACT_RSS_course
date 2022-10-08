@@ -54,8 +54,10 @@ export enum InputName {
 
 export type FormState = {
   isSubmitDisabled: boolean;
-  inputErrors: Record<InputName, boolean>;
+  inputErrors: InputErrors;
 };
+
+export type InputErrors = Partial<Record<InputName, boolean>>;
 
 export type FormRefs = {
   [InputName.name]: React.RefObject<HTMLInputElement>;
