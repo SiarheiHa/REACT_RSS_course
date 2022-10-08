@@ -42,10 +42,6 @@ export type SearchBarProps = {
 
 // Form
 
-export type FormState = {
-  isSubmitDisabled: boolean;
-};
-
 export enum InputNames {
   name = 'name',
   surname = 'surname',
@@ -55,6 +51,11 @@ export enum InputNames {
   switcher = 'switcher',
   file = 'file',
 }
+
+export type FormState = {
+  isSubmitDisabled: boolean;
+  inputErrors: Record<InputNames, boolean>;
+};
 
 export type FormRefs = {
   [InputNames.name]: React.RefObject<HTMLInputElement>;

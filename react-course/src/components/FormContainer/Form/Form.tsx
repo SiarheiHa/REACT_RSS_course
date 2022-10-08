@@ -15,7 +15,16 @@ const inputNames: Array<InputNames> = [
 
 class Form extends React.Component<Record<string, never>, FormState> {
   state = {
-    isSubmitDisabled: false,
+    isSubmitDisabled: true,
+    inputErrors: {
+      name: true,
+      surname: false,
+      birthday: false,
+      location: false,
+      checkbox: false,
+      switcher: false,
+      file: false,
+    },
   };
 
   formRefs: FormRefs = {
@@ -35,7 +44,17 @@ class Form extends React.Component<Record<string, never>, FormState> {
 
   onChange = (e: React.FormEvent<HTMLInputElement | HTMLSelectElement>) => {
     console.log('onChange', e.currentTarget.name);
+    //TODO валидировать значение инпута, который сработал.
+    // Если валидация успешна, обновить значение inputErrors
+
+    if (!this.hasFormErrors()) {
+      this.setState({ isSubmitDisabled: false });
+    }
   };
+
+  hasFormErrors() {
+    return Object.values(this.state.inputErrors).some((value) => value);
+  }
 
   createInput(name: InputNames) {
     const props = {
