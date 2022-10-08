@@ -1,19 +1,8 @@
 import React from 'react';
 import { FormProps, FormRefs, FormState, InputErrors, InputName, SwitcherValue } from 'types/types';
+import { checkboxText, countryList, inputNames, switcherFieldName } from './constants';
 
 import './Form.scss';
-
-const inputNames: Array<InputName> = [
-  InputName.name,
-  InputName.surname,
-  InputName.birthday,
-  InputName.location,
-  InputName.checkbox,
-  InputName.switcher,
-  InputName.file,
-];
-
-const switcherFieldName = 'gender';
 
 class Form extends React.Component<FormProps, FormState> {
   state = {
@@ -146,31 +135,25 @@ class Form extends React.Component<FormProps, FormState> {
     const value = element.value;
     switch (name) {
       case InputName.name:
-        return value.length > 1;
-        break;
       case InputName.surname:
-        return value.length > 1;
+        return Boolean(value.match(/^[A-zА-я]{2,}/i));
         break;
-      // case InputName.birthday:
-      // case InputName.location:
-      // case InputName.checkbox:
-      // case InputName.switcher:
-      // case InputName.file:
-      default:
+      case InputName.birthday:
+      case InputName.location:
+      case InputName.file:
+        return Boolean(value);
+        break;
+      case InputName.checkbox:
+        if (element instanceof HTMLInputElement) {
+          return element.checked;
+        }
+        break;
+      case InputName.switcher:
         return true;
+        break;
+      default:
+        return false;
     }
-
-    // if (this.state.inputErrors[name] === isError) return;
-
-    // this.setState(
-    //   ({ inputErrors }) => {
-    //     const newInputErrors = { ...inputErrors, [name]: isError };
-    //     return {
-    //       inputErrors: { ...newInputErrors },
-    //     };
-    //   },
-    //   () => console.log(this.hasFormErrors())
-    // );
   }
 
   hasFormErrors() {
@@ -207,19 +190,22 @@ class Form extends React.Component<FormProps, FormState> {
               onChange={this.onChange}
             >
               <option value="" disabled></option>
-              <option>country1</option>
-              <option>country2</option>
-              <option>country3</option>
-              <option>country4</option>
-              <option>country5</option>
-              <option>country6</option>
+              {countryList.map((contry) => (
+                <option key={contry}>{contry}</option>
+              ))}
+              {/* <option>country1</option>
+              <option>contry2</option>
+              <option>contry3</option>
+              <option>contry4</option>
+              <option>contry5</option>
+              <option>contry6</option> */}
             </select>
           </>
         );
       case InputName.checkbox:
         return (
           <>
-            <span className="label__title">Are you agree?</span>
+            <span className="label__title">{checkboxText}</span>
             <input type="checkbox" {...props} />
           </>
         );
@@ -235,7 +221,7 @@ class Form extends React.Component<FormProps, FormState> {
         return (
           <>
             <span className="label__title">Avatar</span>
-            <input type="file" {...props} />
+            <input type="file" accept=".png, .jpg, .jpeg" {...props} />
           </>
         );
       default:
