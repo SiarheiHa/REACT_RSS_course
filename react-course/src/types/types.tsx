@@ -52,6 +52,15 @@ export enum InputName {
   file = 'file',
 }
 
+export enum SwitcherValue {
+  left = 'male',
+  right = 'female',
+}
+
+export type FormProps = {
+  onFormFill: (data: Record<string, string>) => void;
+};
+
 export type FormState = {
   isSubmitDisabled: boolean;
   inputErrors: InputErrors;

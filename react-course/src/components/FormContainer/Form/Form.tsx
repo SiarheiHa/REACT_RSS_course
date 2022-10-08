@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormRefs, FormState, InputErrors, InputName } from 'types/types';
+import { FormProps, FormRefs, FormState, InputErrors, InputName, SwitcherValue } from 'types/types';
 
 import './Form.scss';
 
@@ -13,7 +13,7 @@ const inputNames: Array<InputName> = [
   InputName.file,
 ];
 
-class Form extends React.Component<Record<string, never>, FormState> {
+class Form extends React.Component<FormProps, FormState> {
   state = {
     isSubmitDisabled: true,
     inputErrors: {
@@ -41,7 +41,7 @@ class Form extends React.Component<Record<string, never>, FormState> {
     console.log('onSubmit', e);
     e.preventDefault();
     this.validateForm();
-    console.log(this.hasFormErrors());
+    // console.log(this.hasFormErrors());
 
     // if (this.hasFormErrors()) {
     //   this.setState({ isSubmitDisabled: true });
@@ -89,32 +89,42 @@ class Form extends React.Component<Record<string, never>, FormState> {
         inputErrors: newInputErrors,
         isSubmitDisabled: true,
       },
-      () => console.log(this.hasFormErrors())
+      () => {
+        if (!this.hasFormErrors()) {
+          console.log('no erorrs');
+          this.submitFormData();
+        }
+      }
     );
+  }
 
-    console.log(this.hasFormErrors());
-    // if (this.hasFormErrors()) {
-    //   console.log('есть ошибки кнопка задизеблена');
-    //   this.setState({ isSubmitDisabled: true });
-    //   // disable submit
-    // } else {
-    //   //TODO
-    //   // логика создания карточки
+  submitFormData() {
+    //   // логика сбора данных формы
+    const data = this.getInputsData();
     //   // очистить FormErrors
     //   // очистить values
-    // }
+    this.props.onFormFill(data);
+  }
+
+  getInputsData() {
+    const data = Object.values(this.formRefs).reduce((acc: Record<string, string>, ref) => {
+      if (!ref.current) return acc;
+      const { name } = ref.current;
+      if (!name || ref.current.name === 'checkbox') return acc;
+      if (name === 'switcher' && ref.current instanceof HTMLInputElement) {
+        acc['gender'] = ref.current.checked ? SwitcherValue.right : SwitcherValue.left;
+        return acc;
+      }
+      acc[name] = ref.current.value;
+      return acc;
+    }, {});
+    return data;
   }
 
   isInputValueValid(name: InputName) {
     const element = this.formRefs[name].current;
     if (!element) return;
     const value = element.value;
-    // let isError: boolean;
-    // if (element instanceof HTMLInputElement) {
-    //   const checked = element.checked;
-    //   // console.log(cheked);
-    // }
-    console.log(name);
     switch (name) {
       case InputName.name:
         return value.length > 1;
@@ -197,9 +207,9 @@ class Form extends React.Component<Record<string, never>, FormState> {
       case InputName.switcher:
         return (
           <label className="switcher">
-            <span className="switcher__text">left</span>
+            <span className="switcher__text">{SwitcherValue.left}</span>
             <input type="checkbox" {...props} />
-            <span className="switcher__text">right</span>
+            <span className="switcher__text">{SwitcherValue.right}</span>
           </label>
         );
       case InputName.file:
