@@ -13,6 +13,8 @@ const inputNames: Array<InputName> = [
   InputName.file,
 ];
 
+const switcherFieldName = 'gender';
+
 class Form extends React.Component<FormProps, FormState> {
   state = {
     isSubmitDisabled: true,
@@ -41,11 +43,6 @@ class Form extends React.Component<FormProps, FormState> {
     console.log('onSubmit', e);
     e.preventDefault();
     this.validateForm();
-    // console.log(this.hasFormErrors());
-
-    // if (this.hasFormErrors()) {
-    //   this.setState({ isSubmitDisabled: true });
-    // }
   };
 
   onChange = (e: React.FormEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -93,26 +90,48 @@ class Form extends React.Component<FormProps, FormState> {
         if (!this.hasFormErrors()) {
           console.log('no erorrs');
           this.submitFormData();
+          this.resetForm();
         }
       }
     );
   }
 
   submitFormData() {
-    //   // логика сбора данных формы
     const data = this.getInputsData();
-    //   // очистить FormErrors
-    //   // очистить values
     this.props.onFormFill(data);
+  }
+
+  resetForm() {
+    Object.values(this.formRefs).forEach((ref) => {
+      const element = ref.current;
+      if (element instanceof HTMLInputElement && element.type === 'checkbox') {
+        element.checked = false;
+      } else if (element) {
+        element.value = '';
+      }
+    });
+
+    this.setState({
+      isSubmitDisabled: true,
+      inputErrors: {
+        name: false,
+        surname: false,
+        birthday: false,
+        location: false,
+        checkbox: false,
+        switcher: false,
+        file: false,
+      },
+    });
   }
 
   getInputsData() {
     const data = Object.values(this.formRefs).reduce((acc: Record<string, string>, ref) => {
       if (!ref.current) return acc;
       const { name } = ref.current;
-      if (!name || ref.current.name === 'checkbox') return acc;
-      if (name === 'switcher' && ref.current instanceof HTMLInputElement) {
-        acc['gender'] = ref.current.checked ? SwitcherValue.right : SwitcherValue.left;
+      if (!name || ref.current.name === InputName.checkbox) return acc;
+      if (name === InputName.switcher && ref.current instanceof HTMLInputElement) {
+        acc[switcherFieldName] = ref.current.checked ? SwitcherValue.right : SwitcherValue.left;
         return acc;
       }
       acc[name] = ref.current.value;
