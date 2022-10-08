@@ -42,7 +42,7 @@ export type SearchBarProps = {
 
 // Form
 
-export enum InputNames {
+export enum InputName {
   name = 'name',
   surname = 'surname',
   birthday = 'birthday',
@@ -54,15 +54,15 @@ export enum InputNames {
 
 export type FormState = {
   isSubmitDisabled: boolean;
-  inputErrors: Record<InputNames, boolean>;
+  inputErrors: Record<InputName, boolean>;
 };
 
 export type FormRefs = {
-  [InputNames.name]: React.RefObject<HTMLInputElement>;
-  [InputNames.surname]: React.RefObject<HTMLInputElement>;
-  [InputNames.birthday]: React.RefObject<HTMLInputElement>;
-  [InputNames.location]: React.RefObject<HTMLSelectElement>;
-  [InputNames.checkbox]: React.RefObject<HTMLInputElement>;
-  [InputNames.switcher]: React.RefObject<HTMLInputElement>;
-  [InputNames.file]: React.RefObject<HTMLInputElement>;
+  [InputName.name]: React.RefObject<HTMLInputElement>;
+  [InputName.surname]: React.RefObject<HTMLInputElement>;
+  [InputName.birthday]: React.RefObject<HTMLInputElement>;
+  [InputName.location]: React.RefObject<HTMLSelectElement>;
+  [InputName.checkbox]: React.RefObject<HTMLInputElement>;
+  [InputName.switcher]: React.RefObject<HTMLInputElement>;
+  [InputName.file]: React.RefObject<HTMLInputElement>;
 };
