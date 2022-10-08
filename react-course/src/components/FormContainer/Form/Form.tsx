@@ -40,9 +40,9 @@ class Form extends React.Component<Record<string, never>, FormState> {
   onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     console.log('onSubmit', e);
     e.preventDefault();
-    if (this.hasFormErrors()) {
-      this.setState({ isSubmitDisabled: true });
-    }
+    // if (this.hasFormErrors()) {
+    //   this.setState({ isSubmitDisabled: true });
+    // }
   };
 
   onChange = (e: React.FormEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -54,13 +54,16 @@ class Form extends React.Component<Record<string, never>, FormState> {
     // сделать какую-то проверку на InputName
     const name = e.currentTarget.name as InputName;
 
-    // console.log(this.state.inputErrors);
-    this.validateInputValue(name);
-    // console.log(this.state.inputErrors);
+    if (this.state.inputErrors[name]) {
+      this.setState(({ inputErrors }) => {
+        return {
+          inputErrors: { ...inputErrors, [name]: false },
+        };
+      });
+    }
 
-    this.setState({ isSubmitDisabled: false });
-    if (this.hasFormErrors()) {
-      this.setState({ isSubmitDisabled: true });
+    if (!this.hasFormErrors()) {
+      this.setState({ isSubmitDisabled: false });
     }
   };
 
@@ -102,6 +105,10 @@ class Form extends React.Component<Record<string, never>, FormState> {
 
   hasFormErrors() {
     return Object.values(this.state.inputErrors).some((value) => value);
+  }
+
+  hasInputError(name: InputName) {
+    return this.state.inputErrors[name];
   }
 
   createInput(name: InputName) {
@@ -172,9 +179,18 @@ class Form extends React.Component<Record<string, never>, FormState> {
   }
 
   render() {
-    const inputs = inputNames.map((inputName) => (
-      <label key={inputName}>{this.createInput(inputName)}</label>
-    ));
+    const inputs = inputNames.map((inputName) => {
+      const errorMessage = this.hasInputError(inputName) ? (
+        <span className="error-message">error</span>
+      ) : null;
+
+      return (
+        <label key={inputName}>
+          {this.createInput(inputName)}
+          {errorMessage}
+        </label>
+      );
+    });
 
     return (
       <form className="form-page__form" onSubmit={this.onSubmit}>
