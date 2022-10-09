@@ -115,12 +115,16 @@ class Form extends React.Component<FormProps, FormState> {
   }
 
   getInputsData() {
-    const data = Object.values(this.formRefs).reduce((acc: Record<string, string>, ref) => {
+    const data = Object.values(this.formRefs).reduce((acc: Record<string, string | File>, ref) => {
       if (!ref.current) return acc;
       const { name } = ref.current;
       if (!name || ref.current.name === InputName.checkbox) return acc;
       if (name === InputName.switcher && ref.current instanceof HTMLInputElement) {
         acc[switcherFieldName] = ref.current.checked ? SwitcherValue.right : SwitcherValue.left;
+        return acc;
+      }
+      if (name === InputName.file && ref.current instanceof HTMLInputElement && ref.current.files) {
+        acc[name] = ref.current.files[0];
         return acc;
       }
       acc[name] = ref.current.value;
@@ -193,12 +197,6 @@ class Form extends React.Component<FormProps, FormState> {
               {countryList.map((contry) => (
                 <option key={contry}>{contry}</option>
               ))}
-              {/* <option>country1</option>
-              <option>contry2</option>
-              <option>contry3</option>
-              <option>contry4</option>
-              <option>contry5</option>
-              <option>contry6</option> */}
             </select>
           </>
         );

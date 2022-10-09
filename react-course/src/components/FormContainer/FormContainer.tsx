@@ -1,13 +1,21 @@
 import React from 'react';
+import { FormContainerState } from 'types/types';
 import CardList from './CardList';
 import Form from './Form';
 
 import './FormContainer.scss';
 
-class FormContainer extends React.Component {
-  onFormFill = (data: Record<string, string>) => {
+class FormContainer extends React.Component<Record<string, never>, FormContainerState> {
+  state = {
+    cards: [],
+  };
+
+  onFormFill = (data: Record<string, string | File>) => {
     console.log('form is filled');
     console.log(data);
+    this.setState(({ cards }) => {
+      return { cards: [...cards, data] };
+    });
   };
 
   render() {
@@ -15,7 +23,7 @@ class FormContainer extends React.Component {
       <div>
         <p>container</p>
         <Form onFormFill={this.onFormFill} />
-        <CardList />
+        <CardList cards={this.state.cards} />
       </div>
     );
   }

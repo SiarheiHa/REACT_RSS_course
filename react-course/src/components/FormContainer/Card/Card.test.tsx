@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import React from 'react';
-import CardListContainer from './CardList';
+import CardListContainer from './Card';
 
 describe('CardList', () => {
   it('CardList renders', () => {
