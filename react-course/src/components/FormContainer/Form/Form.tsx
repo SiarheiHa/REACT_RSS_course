@@ -1,6 +1,12 @@
 import React from 'react';
 import { FormProps, FormRefs, FormState, InputErrors, InputName, SwitcherValue } from 'types/types';
-import { checkboxText, countryList, inputNames, switcherFieldName } from './constants';
+import {
+  checkboxText,
+  countryList,
+  errorMassages,
+  inputNames,
+  switcherFieldName,
+} from './constants';
 
 import './Form.scss';
 
@@ -234,7 +240,7 @@ class Form extends React.Component<FormProps, FormState> {
 
   render() {
     const inputs = inputNames.map((inputName) => {
-      const errorMessage = this.hasInputError(inputName) ? 'error' : null;
+      const errorMessage = this.hasInputError(inputName) ? errorMassages[inputName] : null;
 
       return (
         <label key={inputName}>

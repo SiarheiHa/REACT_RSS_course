@@ -10,6 +10,16 @@ export const inputNames: Array<InputName> = [
   InputName.file,
 ];
 
+export const errorMassages: Record<InputName, string> = {
+  [InputName.name]: 'check name (at least 2 characters, letters only)',
+  [InputName.surname]: 'check surname (at least 2 characters, letters only)',
+  [InputName.birthday]: 'please enter your birthday',
+  [InputName.location]: 'please enter your location',
+  [InputName.checkbox]: 'please check',
+  [InputName.switcher]: 'please check',
+  [InputName.file]: 'please choose a file',
+};
+
 export const switcherFieldName = 'gender';
 export const checkboxText = 'I agree to create a card';
 export const countryList = [
