@@ -5,7 +5,7 @@ import './CardList.scss';
 
 function CardList({ cards }: { cards: Record<string, string>[] }) {
   return (
-    <div>
+    <div className="card-list">
       {cards.map((card, i) => (
         <Card card={card} key={i} />
       ))}

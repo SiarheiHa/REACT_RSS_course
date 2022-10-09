@@ -234,14 +234,12 @@ class Form extends React.Component<FormProps, FormState> {
 
   render() {
     const inputs = inputNames.map((inputName) => {
-      const errorMessage = this.hasInputError(inputName) ? (
-        <span className="error-message">error</span>
-      ) : null;
+      const errorMessage = this.hasInputError(inputName) ? 'error' : null;
 
       return (
         <label key={inputName}>
           {this.createInput(inputName)}
-          {errorMessage}
+          <span className="error-message">{errorMessage}</span>
         </label>
       );
     });
