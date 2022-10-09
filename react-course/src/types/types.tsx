@@ -81,3 +81,11 @@ export type FormRefs = {
 export type FormContainerState = {
   cards: Record<string, string | File>[];
 };
+
+export type CardProps = {
+  card: Record<string, string | File>;
+};
+
+export type CardState = {
+  file: string | ArrayBuffer;
+};

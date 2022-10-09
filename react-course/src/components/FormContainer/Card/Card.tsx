@@ -1,52 +1,49 @@
 import React from 'react';
+import { CardProps, CardState } from 'types/types';
 
 import './Card.scss';
 
-function Card({ card }: { card: Record<string, string | File> }) {
-  const fileReader = new FileReader();
-  let file: string | ArrayBuffer;
-  const getFile = () => {
-    console.log('loadend');
-    console.log(typeof fileReader.result);
-    if (fileReader.result) {
-      file = fileReader.result;
-      console.log(file);
-    }
+class Card extends React.Component<CardProps, CardState> {
+  state = {
+    file: '',
   };
 
-  if (card.file instanceof File) {
-    console.log(card.file);
-    fileReader.readAsDataURL(card.file);
-    fileReader.addEventListener('loadend', getFile);
+  componentDidMount(): void {
+    const { card } = this.props;
+    const fileReader = new FileReader();
+    let file: string | ArrayBuffer;
+    const getFile = () => {
+      if (fileReader.result) {
+        file = fileReader.result;
+        this.setState({ file: file });
+      }
+    };
+
+    if (card.file instanceof File) {
+      fileReader.readAsDataURL(card.file);
+      fileReader.addEventListener('loadend', getFile);
+    }
   }
 
-  return (
-    <>
-      {Object.entries(card).map(([field, value]) => {
-        // if (field === 'file') {
-        //   return (
-        //     <p key={value}>
-        //       <img src={value} alt="avatar" />
-        //       <p>{value}</p>
-        //     </p>
-        //   );
-        // }
-
-        // if (value instanceof File) return null;
-
-        if (value instanceof File) {
-          return <img src={file as string} alt="image" key={field} />;
-        }
-
-        return (
-          <p key={value}>
-            <span>{field + ':'}</span>
-            <span>{value}</span>
-          </p>
-        );
-      })}
-    </>
-  );
+  render() {
+    const { card } = this.props;
+    const { file } = this.state;
+    return (
+      <>
+        {Object.entries(card).map(([field, value]) => {
+          if (value instanceof File) {
+            return <img src={file as string} alt="image" key={field} />;
+          }
+          return (
+            <p key={value}>
+              <span>{field + ': '}</span>
+              <span>{value}</span>
+            </p>
+          );
+        })}
+      </>
+    );
+  }
 }
 
 export default Card;
