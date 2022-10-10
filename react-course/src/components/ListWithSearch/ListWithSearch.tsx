@@ -22,7 +22,6 @@ class ListWithSearch extends Component<Record<string, never>, ListWithSearchStat
   }
 
   componentWillUnmount() {
-    console.log('componentWillUnmount');
     this.setSearchValue();
     window.removeEventListener('beforeunload', this.setSearchValue);
   }

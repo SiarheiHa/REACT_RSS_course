@@ -35,7 +35,6 @@ class Form extends React.Component<FormProps, FormState> {
   };
 
   onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    console.log('onSubmit', e);
     e.preventDefault();
     this.validateForm();
   };
@@ -150,7 +149,8 @@ class Form extends React.Component<FormProps, FormState> {
         break;
       case InputName.birthday:
       case InputName.location:
-      case InputName.file:
+        // if (name === InputName.file)
+        //   console.log((element as HTMLInputElement).files![0], 'value' + value);
         return Boolean(value);
         break;
       case InputName.checkbox:
@@ -160,6 +160,9 @@ class Form extends React.Component<FormProps, FormState> {
         break;
       case InputName.switcher:
         return true;
+        break;
+      case InputName.file:
+        return Boolean((element as HTMLInputElement).files?.length);
         break;
       default:
         return false;

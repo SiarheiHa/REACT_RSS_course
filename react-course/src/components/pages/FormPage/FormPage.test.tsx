@@ -2,9 +2,9 @@ import { render, screen } from '@testing-library/react';
 import React from 'react';
 import FormPage from './FormPage';
 
-describe('MainPage', () => {
-  it('MainPage renders', () => {
+describe('FormPage', () => {
+  it('FormPage renders', () => {
     render(<FormPage />);
-    // expect(screen.getByText('FormPage')).toBeInTheDocument();
+    expect(screen.getByText('Fill out the form to create a card')).toBeInTheDocument();
   });
 });

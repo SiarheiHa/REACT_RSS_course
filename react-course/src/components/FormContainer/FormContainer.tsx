@@ -11,8 +11,6 @@ class FormContainer extends React.Component<Record<string, never>, FormContainer
   };
 
   onFormFill = (data: Record<string, string | File>) => {
-    console.log('form is filled');
-    console.log(data);
     this.setState(({ cards }) => {
       return { cards: [...cards, data] };
     });
@@ -20,13 +18,12 @@ class FormContainer extends React.Component<Record<string, never>, FormContainer
 
   render() {
     return (
-      <div>
-        <p>container</p>
+      <div data-testid="form-container">
         <Form onFormFill={this.onFormFill} />
         <CardList cards={this.state.cards} />
       </div>
     );
   }
 }
-// const FormContainer = () => <p>cont</p>;
+
 export default FormContainer;

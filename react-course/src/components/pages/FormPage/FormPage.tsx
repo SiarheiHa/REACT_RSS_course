@@ -2,7 +2,12 @@ import FormContainer from '../../FormContainer';
 import React from 'react';
 
 const FormPage = () => {
-  return <FormContainer />;
+  return (
+    <>
+      <p>Fill out the form to create a card</p>
+      <FormContainer />
+    </>
+  );
 };
 
 export default FormPage;

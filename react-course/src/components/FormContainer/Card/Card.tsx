@@ -29,7 +29,7 @@ class Card extends React.Component<CardProps, CardState> {
     const { card } = this.props;
     const { file } = this.state;
     return (
-      <div className="form-page__card">
+      <div className="form-page__card" data-testid="form-card">
         <img src={file as string} alt="image" height="150" />
         {Object.entries(card).map(([field, value]) => {
           if (value instanceof File) return;
