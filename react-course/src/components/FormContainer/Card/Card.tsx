@@ -9,18 +9,20 @@ class Card extends React.Component<CardProps, CardState> {
   };
 
   componentDidMount(): void {
-    const { card } = this.props;
+    const { file } = this.props.card;
     const fileReader = new FileReader();
-    let file: string | ArrayBuffer;
+
     const getFile = () => {
       if (fileReader.result) {
-        file = fileReader.result;
-        this.setState({ file: file });
+        const fileStr = fileReader.result;
+        if (typeof fileStr === 'string') {
+          this.setState({ file: fileStr });
+        }
       }
     };
 
-    if (card.file instanceof File) {
-      fileReader.readAsDataURL(card.file);
+    if (file instanceof File) {
+      fileReader.readAsDataURL(file);
       fileReader.addEventListener('loadend', getFile);
     }
   }

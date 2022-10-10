@@ -40,12 +40,6 @@ class Form extends React.Component<FormProps, FormState> {
   };
 
   onChange = (e: React.FormEvent<HTMLInputElement | HTMLSelectElement>) => {
-    // console.log('onChange', e.currentTarget.name);
-    // console.log('onChange', e.currentTarget.value);
-    //TODO валидировать значение инпута, который сработал.
-    // Если валидация успешна, обновить значение inputErrors
-
-    // сделать какую-то проверку на InputName
     const name = e.currentTarget.name as InputName;
 
     const toggleSubmit = () => {

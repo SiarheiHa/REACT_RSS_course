@@ -87,5 +87,5 @@ export type CardProps = {
 };
 
 export type CardState = {
-  file: string | ArrayBuffer;
+  file: string;
 };
