@@ -3,7 +3,7 @@ import { FormProps, FormRefs, FormState, InputErrors, InputName, SwitcherValue }
 import {
   checkboxText,
   countryList,
-  errorMassages,
+  errorMessages,
   inputNames,
   switcherFieldName,
 } from './constants';
@@ -49,9 +49,7 @@ class Form extends React.Component<FormProps, FormState> {
     const name = e.currentTarget.name as InputName;
 
     const toggleSubmit = () => {
-      console.log('foo' + !this.hasFormErrors());
       if (!this.hasFormErrors()) {
-        console.log('foo2' + !this.hasFormErrors());
         this.setState({ isSubmitDisabled: false });
       }
     };
@@ -82,7 +80,6 @@ class Form extends React.Component<FormProps, FormState> {
       },
       () => {
         if (!this.hasFormErrors()) {
-          console.log('no erorrs');
           this.submitFormData();
           this.resetForm();
         }
@@ -149,8 +146,6 @@ class Form extends React.Component<FormProps, FormState> {
         break;
       case InputName.birthday:
       case InputName.location:
-        // if (name === InputName.file)
-        //   console.log((element as HTMLInputElement).files![0], 'value' + value);
         return Boolean(value);
         break;
       case InputName.checkbox:
@@ -243,7 +238,7 @@ class Form extends React.Component<FormProps, FormState> {
 
   render() {
     const inputs = inputNames.map((inputName) => {
-      const errorMessage = this.hasInputError(inputName) ? errorMassages[inputName] : null;
+      const errorMessage = this.hasInputError(inputName) ? errorMessages[inputName] : null;
 
       return (
         <label key={inputName}>
@@ -254,7 +249,7 @@ class Form extends React.Component<FormProps, FormState> {
     });
 
     return (
-      <form className="form-page__form" onSubmit={this.onSubmit}>
+      <form className="form-page__form" onSubmit={this.onSubmit} name="form">
         {inputs}
         <input type="submit" value="submit" disabled={this.state.isSubmitDisabled} />
       </form>
