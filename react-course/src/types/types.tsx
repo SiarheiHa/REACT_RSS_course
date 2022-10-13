@@ -38,7 +38,7 @@ export type ProductCardProps = {
 };
 
 export type SearchBarProps = {
-  onInput: (e: React.FormEvent<HTMLInputElement>) => void;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   value: string;
 };
 
