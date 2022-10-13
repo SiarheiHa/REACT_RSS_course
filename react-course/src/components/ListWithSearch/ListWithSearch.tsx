@@ -1,14 +1,19 @@
 import ItemList from 'components/ItemList';
 import SearchBar from 'components/SearchBar';
 import data from '../../data';
-import { ListWithSearchState, Product } from 'types/types';
+import Api from 'api';
+import { Character, ListWithSearchState, Product } from 'types/types';
 
 import React, { Component } from 'react';
 
 import './ListWithSearch.scss';
 
 class ListWithSearch extends Component<Record<string, never>, ListWithSearchState> {
+  api = new Api();
+
   state = {
+    isLoading: true,
+    characters: [],
     products: data,
     searchValue: '',
     cart: [],
@@ -19,6 +24,9 @@ class ListWithSearch extends Component<Record<string, never>, ListWithSearchStat
     const searchValue = localStorage.getItem('search');
     if (searchValue) this.setState({ searchValue });
     window.addEventListener('beforeunload', this.setSearchValue);
+
+    // console.log(new Api().getCharacterBySearch('gand'));
+    this.updateCharacters();
   }
 
   componentWillUnmount() {
@@ -31,7 +39,7 @@ class ListWithSearch extends Component<Record<string, never>, ListWithSearchStat
   };
 
   onInput = (e: React.FormEvent<HTMLInputElement>) => {
-    this.setState({ searchValue: e.currentTarget.value });
+    this.setState({ searchValue: e.currentTarget.value }, this.updateCharacters);
   };
 
   onAddToCart = (product: Product) => {
@@ -58,19 +66,38 @@ class ListWithSearch extends Component<Record<string, never>, ListWithSearchStat
     );
   }
 
+  updateCharacters() {
+    console.log('updateCharacters');
+    if (this.state.searchValue) {
+      this.api.getCharacterBySearch(this.state.searchValue).then(this.onCharactersLoaded);
+    } else {
+      this.api.getAllCharacters().then(this.onCharactersLoaded);
+    }
+  }
+
+  onCharactersLoaded = (characters: Character[]) => {
+    this.setState({
+      isLoading: false,
+      characters: characters,
+    });
+  };
+
   render() {
-    const { products, searchValue, cart, favorites } = this.state;
-    const itemsToDraw = this.filterBySearch(products);
+    const { searchValue, cart, favorites, isLoading, characters } = this.state;
     return (
       <div className="list-with-search">
         <SearchBar onInput={this.onInput} value={searchValue} />
-        <ItemList
-          items={itemsToDraw}
-          cart={cart}
-          favorites={favorites}
-          onAddToCart={this.onAddToCart}
-          onClickFavorite={this.onClickFavorite}
-        />
+        {isLoading ? (
+          <p>LOADING...</p>
+        ) : (
+          <ItemList
+            items={characters}
+            cart={cart}
+            favorites={favorites}
+            onAddToCart={this.onAddToCart}
+            onClickFavorite={this.onClickFavorite}
+          />
+        )}
       </div>
     );
   }

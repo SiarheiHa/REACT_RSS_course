@@ -1,17 +1,21 @@
+import CharacterCard from 'components/CharacterCard';
 import React from 'react';
-import ProductCard from 'components/ProductCard';
 import { ItemListProps } from '../../types/types';
 
 import './ItemList.scss';
 
-const ItemList = ({ items, cart, favorites, onAddToCart, onClickFavorite }: ItemListProps) => {
+const ItemList = ({ items }: ItemListProps) => {
+  console.log(items);
   return (
     <div className="item-list">
       {items.map((item) => {
+        return <CharacterCard character={item} key={item._id} />;
+      })}
+      {/* {items.map((item) => {
         const isInCart = cart.includes(item);
         const isInFavorites = favorites.includes(item);
         return (
-          <ProductCard
+          <CharacterCard
             product={item}
             key={item._id}
             isInCart={isInCart}
@@ -20,7 +24,7 @@ const ItemList = ({ items, cart, favorites, onAddToCart, onClickFavorite }: Item
             onClickFavorite={onClickFavorite}
           />
         );
-      })}
+      })} */}
     </div>
   );
 };
