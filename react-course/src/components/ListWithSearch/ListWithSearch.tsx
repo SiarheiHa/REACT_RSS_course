@@ -1,8 +1,7 @@
 import ItemList from 'components/ItemList';
 import SearchBar from 'components/SearchBar';
-import data from '../../data';
 import Api from 'api';
-import { Character, ListWithSearchState, Product } from 'types/types';
+import { Character, ListWithSearchState } from 'types/types';
 
 import React, { Component, FormEvent } from 'react';
 
@@ -14,10 +13,7 @@ class ListWithSearch extends Component<Record<string, never>, ListWithSearchStat
   state = {
     isLoading: true,
     characters: [],
-    products: data,
     searchValue: localStorage.getItem('search') || '',
-    cart: [],
-    favorites: [],
   };
 
   componentDidMount() {
@@ -44,30 +40,6 @@ class ListWithSearch extends Component<Record<string, never>, ListWithSearchStat
     }
   };
 
-  onAddToCart = (product: Product) => {
-    this.setState(({ cart }) => {
-      if (cart.includes(product)) {
-        return { cart: cart.filter((item) => item !== product) };
-      }
-      return { cart: [...cart, product] };
-    });
-  };
-
-  onClickFavorite = (product: Product) => {
-    this.setState(({ favorites }) => {
-      if (favorites.includes(product)) {
-        return { favorites: favorites.filter((item) => item !== product) };
-      }
-      return { favorites: [...favorites, product] };
-    });
-  };
-
-  filterBySearch(products: Product[]) {
-    return products.filter(({ set }) =>
-      set.toLowerCase().includes(this.state.searchValue.toLowerCase())
-    );
-  }
-
   updateCharacters() {
     if (this.state.searchValue) {
       this.api.getCharacterBySearch(this.state.searchValue).then(this.onCharactersLoaded);
@@ -84,21 +56,11 @@ class ListWithSearch extends Component<Record<string, never>, ListWithSearchStat
   };
 
   render() {
-    const { searchValue, cart, favorites, isLoading, characters } = this.state;
+    const { searchValue, isLoading, characters } = this.state;
     return (
       <div className="list-with-search">
         <SearchBar onSubmit={this.onSubmit} value={searchValue} />
-        {isLoading ? (
-          <p>LOADING...</p>
-        ) : (
-          <ItemList
-            items={characters}
-            cart={cart}
-            favorites={favorites}
-            onAddToCart={this.onAddToCart}
-            onClickFavorite={this.onClickFavorite}
-          />
-        )}
+        {isLoading ? <p>LOADING...</p> : <ItemList items={characters} />}
       </div>
     );
   }

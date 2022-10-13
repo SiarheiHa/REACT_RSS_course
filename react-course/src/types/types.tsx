@@ -14,17 +14,10 @@ export interface Product {
 
 export type ItemListProps = {
   items: Character[];
-  cart: Product[];
-  favorites: Product[];
-  onAddToCart: (item: Product) => void;
-  onClickFavorite: (item: Product) => void;
 };
 
 export type ListWithSearchState = {
-  products: Product[];
   searchValue: string;
-  cart: Product[];
-  favorites: Product[];
   isLoading: boolean;
   characters: Character[];
 };
