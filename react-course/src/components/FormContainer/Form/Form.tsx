@@ -10,7 +10,7 @@ import {
 
 import './Form.scss';
 
-class Form extends React.Component<FormProps, FormState> {
+class Form extends React.PureComponent<FormProps, FormState> {
   state = {
     isSubmitDisabled: true,
     inputErrors: {
@@ -56,9 +56,7 @@ class Form extends React.Component<FormProps, FormState> {
       }, toggleSubmit);
     }
 
-    if (!this.hasFormErrors()) {
-      this.setState({ isSubmitDisabled: false });
-    }
+    toggleSubmit();
   };
 
   validateForm() {
@@ -232,12 +230,14 @@ class Form extends React.Component<FormProps, FormState> {
 
   render() {
     const inputs = inputNames.map((inputName) => {
-      const errorMessage = this.hasInputError(inputName) ? errorMessages[inputName] : null;
+      const errorMessage = this.hasInputError(inputName) ? (
+        <span className="error-message">{errorMessages[inputName]}</span>
+      ) : null;
 
       return (
         <label key={inputName}>
           {this.createInput(inputName)}
-          <span className="error-message">{errorMessage}</span>
+          {errorMessage}
         </label>
       );
     });
