@@ -68,7 +68,6 @@ class ListWithSearch extends Component<Record<string, never>, ListWithSearchStat
   };
 
   onCharacterClick = (character: Character) => {
-    console.log(character);
     this.setState({ selectedCharacter: character, isModalOpen: true });
   };
 
@@ -76,13 +75,16 @@ class ListWithSearch extends Component<Record<string, never>, ListWithSearchStat
     const { searchValue, isLoading, characters, isModalOpen, selectedCharacter } = this.state;
     const modalContent = selectedCharacter ? (
       <CharacterCard character={selectedCharacter} detail />
+    ) : null;
+    const content = characters.length ? (
+      <ItemList items={characters} onClick={this.onCharacterClick} />
     ) : (
-      <p>hello</p>
+      <p>no reluts</p>
     );
     return (
       <div className="list-with-search">
         <SearchBar onSubmit={this.onSubmit} value={searchValue} />
-        {isLoading ? <Spinner /> : <ItemList items={characters} onClick={this.onCharacterClick} />}
+        {isLoading ? <Spinner /> : content}
         <Modal isOpen={isModalOpen} onClose={this.onModalClose}>
           {modalContent}
         </Modal>
