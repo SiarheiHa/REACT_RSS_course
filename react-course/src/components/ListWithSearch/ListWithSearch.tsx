@@ -7,19 +7,21 @@ import React, { Component, FormEvent } from 'react';
 
 import './ListWithSearch.scss';
 import Modal from 'components/Modal';
+import CharacterCard from 'components/CharacterCard';
 
 class ListWithSearch extends Component<Record<string, never>, ListWithSearchState> {
   api = new Api();
 
-  state = {
+  state: ListWithSearchState = {
     isLoading: true,
     characters: [],
     searchValue: localStorage.getItem('search') || '',
-    isModalOpen: true,
+    isModalOpen: false,
+    selectedCharacter: null,
   };
 
   componentDidMount() {
-    // this.updateCharacters();
+    this.updateCharacters();
     window.addEventListener('beforeunload', this.setSearchValue);
   }
 
@@ -61,14 +63,28 @@ class ListWithSearch extends Component<Record<string, never>, ListWithSearchStat
     this.setState({ isModalOpen: false });
   };
 
+  onCharacterClick = (character: Character) => {
+    console.log(character);
+    this.setState({ selectedCharacter: character, isModalOpen: true });
+  };
+
   render() {
-    const { searchValue, isLoading, characters, isModalOpen } = this.state;
+    const { searchValue, isLoading, characters, isModalOpen, selectedCharacter } = this.state;
+    const modalContent = selectedCharacter ? (
+      <CharacterCard character={selectedCharacter} detail />
+    ) : (
+      <p>hello</p>
+    );
     return (
       <div className="list-with-search">
         <SearchBar onSubmit={this.onSubmit} value={searchValue} />
-        {isLoading ? <p>LOADING...</p> : <ItemList items={characters} />}
+        {isLoading ? (
+          <p>LOADING...</p>
+        ) : (
+          <ItemList items={characters} onClick={this.onCharacterClick} />
+        )}
         <Modal isOpen={isModalOpen} onClose={this.onModalClose}>
-          <p>hello</p>
+          {modalContent}
         </Modal>
       </div>
     );

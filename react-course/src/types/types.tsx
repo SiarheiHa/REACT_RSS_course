@@ -14,6 +14,7 @@ export interface Product {
 
 export type ItemListProps = {
   items: Character[];
+  onClick: (character: Character) => void;
 };
 
 export type ListWithSearchState = {
@@ -21,6 +22,7 @@ export type ListWithSearchState = {
   isLoading: boolean;
   characters: Character[];
   isModalOpen: boolean;
+  selectedCharacter: Character | null;
 };
 
 export type ProductCardProps = {
