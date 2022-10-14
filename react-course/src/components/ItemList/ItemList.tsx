@@ -5,7 +5,6 @@ import { ItemListProps } from '../../types/types';
 import './ItemList.scss';
 
 const ItemList = ({ items }: ItemListProps) => {
-  console.log(items);
   return (
     <div className="item-list">
       {items.map((item) => {

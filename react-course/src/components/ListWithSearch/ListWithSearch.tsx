@@ -6,6 +6,7 @@ import { Character, ListWithSearchState } from 'types/types';
 import React, { Component, FormEvent } from 'react';
 
 import './ListWithSearch.scss';
+import Modal from 'components/Modal';
 
 class ListWithSearch extends Component<Record<string, never>, ListWithSearchState> {
   api = new Api();
@@ -14,10 +15,11 @@ class ListWithSearch extends Component<Record<string, never>, ListWithSearchStat
     isLoading: true,
     characters: [],
     searchValue: localStorage.getItem('search') || '',
+    isModalOpen: true,
   };
 
   componentDidMount() {
-    this.updateCharacters();
+    // this.updateCharacters();
     window.addEventListener('beforeunload', this.setSearchValue);
   }
 
@@ -55,12 +57,19 @@ class ListWithSearch extends Component<Record<string, never>, ListWithSearchStat
     });
   };
 
+  onModalClose = () => {
+    this.setState({ isModalOpen: false });
+  };
+
   render() {
-    const { searchValue, isLoading, characters } = this.state;
+    const { searchValue, isLoading, characters, isModalOpen } = this.state;
     return (
       <div className="list-with-search">
         <SearchBar onSubmit={this.onSubmit} value={searchValue} />
         {isLoading ? <p>LOADING...</p> : <ItemList items={characters} />}
+        <Modal isOpen={isModalOpen} onClose={this.onModalClose}>
+          <p>hello</p>
+        </Modal>
       </div>
     );
   }

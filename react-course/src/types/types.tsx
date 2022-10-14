@@ -20,6 +20,7 @@ export type ListWithSearchState = {
   searchValue: string;
   isLoading: boolean;
   characters: Character[];
+  isModalOpen: boolean;
 };
 
 export type ProductCardProps = {
