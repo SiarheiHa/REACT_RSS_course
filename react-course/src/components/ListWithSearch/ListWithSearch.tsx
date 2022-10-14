@@ -8,6 +8,7 @@ import React, { Component, FormEvent } from 'react';
 import './ListWithSearch.scss';
 import Modal from 'components/Modal';
 import CharacterCard from 'components/CharacterCard';
+import Spinner from 'components/Spinner';
 
 class ListWithSearch extends Component<Record<string, never>, ListWithSearchState> {
   api = new Api();
@@ -45,6 +46,7 @@ class ListWithSearch extends Component<Record<string, never>, ListWithSearchStat
   };
 
   updateCharacters() {
+    this.setState({ isLoading: true });
     if (this.state.searchValue) {
       this.api.getCharacterBySearch(this.state.searchValue).then(this.onCharactersLoaded);
     } else {
@@ -53,10 +55,12 @@ class ListWithSearch extends Component<Record<string, never>, ListWithSearchStat
   }
 
   onCharactersLoaded = (characters: Character[]) => {
-    this.setState({
-      isLoading: false,
-      characters: characters,
-    });
+    setTimeout(() => {
+      this.setState({
+        isLoading: false,
+        characters: characters,
+      });
+    }, 2000);
   };
 
   onModalClose = () => {
@@ -78,11 +82,7 @@ class ListWithSearch extends Component<Record<string, never>, ListWithSearchStat
     return (
       <div className="list-with-search">
         <SearchBar onSubmit={this.onSubmit} value={searchValue} />
-        {isLoading ? (
-          <p>LOADING...</p>
-        ) : (
-          <ItemList items={characters} onClick={this.onCharacterClick} />
-        )}
+        {isLoading ? <Spinner /> : <ItemList items={characters} onClick={this.onCharacterClick} />}
         <Modal isOpen={isModalOpen} onClose={this.onModalClose}>
           {modalContent}
         </Modal>
