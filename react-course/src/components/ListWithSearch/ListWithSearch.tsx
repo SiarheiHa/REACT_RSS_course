@@ -38,8 +38,9 @@ class ListWithSearch extends Component<Record<string, never>, ListWithSearchStat
 
   onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (e.target instanceof HTMLFormElement && e.target[0] instanceof HTMLInputElement) {
-      const searchValue = e.target[0].value;
+    if (e.target instanceof HTMLFormElement) {
+      const formData = new FormData(e.target);
+      const searchValue = String(formData.get('search') || '');
       this.setState({ searchValue }, () => {
         this.updateCharacters();
       });
@@ -47,12 +48,12 @@ class ListWithSearch extends Component<Record<string, never>, ListWithSearchStat
   };
 
   onError = () => {
-    setTimeout(() => {
-      this.setState({
-        isError: true,
-        isLoading: false,
-      });
-    }, 1500);
+    // setTimeout(() => {
+    this.setState({
+      isError: true,
+      isLoading: false,
+    });
+    // }, 1500);
   };
 
   updateCharacters() {
@@ -68,13 +69,13 @@ class ListWithSearch extends Component<Record<string, never>, ListWithSearchStat
   }
 
   onCharactersLoaded = (characters: Character[]) => {
-    setTimeout(() => {
-      this.setState({
-        isError: false,
-        isLoading: false,
-        characters: characters,
-      });
-    }, 2000);
+    // setTimeout(() => {
+    this.setState({
+      isError: false,
+      isLoading: false,
+      characters: characters,
+    });
+    // }, 2000);
   };
 
   onModalClose = () => {
