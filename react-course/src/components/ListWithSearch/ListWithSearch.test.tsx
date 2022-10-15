@@ -73,7 +73,7 @@ describe('ListWithSearch', () => {
     expect(await screen.findByText('no reluts')).toBeInTheDocument();
   });
 
-  it('if item is not found renders message about it', async () => {
+  it('error message renders on server error', async () => {
     render(<ListWithSearch />);
     const input = screen.getByRole('searchbox');
     userEvent.type(input, 'invalidPath');

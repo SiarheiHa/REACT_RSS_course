@@ -47,7 +47,6 @@ const testItems = [
 describe('ItemList', () => {
   it('item list renders', () => {
     render(<ItemList items={testItems} onClick={jest.fn()} />);
-    screen.debug();
     //expect testItems.length + 2 (library wrapper + ItemList wrapper)
     expect(screen.getAllByRole('generic').length).toEqual(testItems.length + 2);
   });

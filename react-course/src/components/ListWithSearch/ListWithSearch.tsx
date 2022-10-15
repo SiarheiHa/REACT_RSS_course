@@ -83,7 +83,6 @@ class ListWithSearch extends Component<Record<string, never>, ListWithSearchStat
   };
 
   onCharacterClick = (character: Character) => {
-    console.log(character);
     this.setState({ selectedCharacter: character, isModalOpen: true });
   };
 
