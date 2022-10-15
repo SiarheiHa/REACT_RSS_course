@@ -5,7 +5,6 @@ export default class Api {
   requestCounter = 0;
 
   async getResource(url: string): Promise<ResponseModel> {
-    console.log(++this.requestCounter);
     const res = await fetch(`${apiBase}${url}`, {
       headers: {
         Authorization: `Bearer ${apiKey}`,

@@ -23,7 +23,7 @@ class ListWithSearch extends Component<Record<string, never>, ListWithSearchStat
   };
 
   componentDidMount() {
-    // this.updateCharacters();
+    this.updateCharacters();
     window.addEventListener('beforeunload', this.setSearchValue);
   }
 
