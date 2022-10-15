@@ -18,11 +18,12 @@ export type ItemListProps = {
 };
 
 export type ListWithSearchState = {
-  searchValue: string;
-  isLoading: boolean;
   characters: Character[];
-  isModalOpen: boolean;
+  searchValue: string;
   selectedCharacter: Character | null;
+  isError: boolean;
+  isLoading: boolean;
+  isModalOpen: boolean;
 };
 
 export type ProductCardProps = {

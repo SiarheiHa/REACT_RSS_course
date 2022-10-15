@@ -14,15 +14,16 @@ class ListWithSearch extends Component<Record<string, never>, ListWithSearchStat
   api = new Api();
 
   state: ListWithSearchState = {
-    isLoading: true,
     characters: [],
     searchValue: localStorage.getItem('search') || '',
-    isModalOpen: false,
     selectedCharacter: null,
+    isError: false,
+    isLoading: false,
+    isModalOpen: false,
   };
 
   componentDidMount() {
-    this.updateCharacters();
+    // this.updateCharacters();
     window.addEventListener('beforeunload', this.setSearchValue);
   }
 
@@ -45,18 +46,31 @@ class ListWithSearch extends Component<Record<string, never>, ListWithSearchStat
     }
   };
 
+  onError = () => {
+    setTimeout(() => {
+      this.setState({
+        isError: true,
+        isLoading: false,
+      });
+    }, 1500);
+  };
+
   updateCharacters() {
     this.setState({ isLoading: true });
     if (this.state.searchValue) {
-      this.api.getCharacterBySearch(this.state.searchValue).then(this.onCharactersLoaded);
+      this.api
+        .getCharacterBySearch(this.state.searchValue)
+        .then(this.onCharactersLoaded)
+        .catch(this.onError);
     } else {
-      this.api.getAllCharacters().then(this.onCharactersLoaded);
+      this.api.getAllCharacters().then(this.onCharactersLoaded).catch(this.onError);
     }
   }
 
   onCharactersLoaded = (characters: Character[]) => {
     setTimeout(() => {
       this.setState({
+        isError: false,
         isLoading: false,
         characters: characters,
       });
@@ -72,19 +86,25 @@ class ListWithSearch extends Component<Record<string, never>, ListWithSearchStat
   };
 
   render() {
-    const { searchValue, isLoading, characters, isModalOpen, selectedCharacter } = this.state;
-    const modalContent = selectedCharacter ? (
-      <CharacterCard character={selectedCharacter} detail />
-    ) : null;
+    const { searchValue, isLoading, characters, isModalOpen, selectedCharacter, isError } =
+      this.state;
+    const errorMessage = isError ? <p>Oops! Something went wrong...</p> : null;
+    const spinner = isLoading ? <Spinner /> : null;
     const content = characters.length ? (
       <ItemList items={characters} onClick={this.onCharacterClick} />
     ) : (
       <p>no reluts</p>
     );
+    const modalContent = selectedCharacter ? (
+      <CharacterCard character={selectedCharacter} detail />
+    ) : null;
+
     return (
       <div className="list-with-search">
         <SearchBar onSubmit={this.onSubmit} value={searchValue} />
-        {isLoading ? <Spinner /> : content}
+        {errorMessage}
+        {spinner}
+        {!isError && !isLoading ? content : null}
         <Modal isOpen={isModalOpen} onClose={this.onModalClose}>
           {modalContent}
         </Modal>
