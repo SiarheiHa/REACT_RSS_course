@@ -80,4 +80,22 @@ describe('ListWithSearch', () => {
     userEvent.keyboard('{Enter}');
     expect(await screen.findByText('Oops! Something went wrong...')).toBeInTheDocument();
   });
+
+  it('modal works', async () => {
+    render(<ListWithSearch />);
+    expect(await screen.findByText(testResponse.docs[0].name)).toBeInTheDocument();
+    userEvent.click(screen.getByText(testResponse.docs[0].name));
+    const modal = screen.getByTestId('modal-overlay');
+    expect(modal).toBeInTheDocument();
+    userEvent.click(modal);
+    expect(modal).not.toBeInTheDocument();
+    expect(screen.getByText(testResponse.docs[1].name)).toBeInTheDocument();
+    userEvent.click(screen.getByText(testResponse.docs[1].name));
+    expect(screen.getAllByText(testResponse.docs[1].name).length).toEqual(2);
+    const modalBtn = screen.getByRole('button');
+    expect(modalBtn).toBeInTheDocument();
+    expect(screen.queryByTestId('modal-wrapper')).toBeInTheDocument();
+    userEvent.click(modalBtn);
+    expect(screen.queryByTestId('modal-wrapper')).not.toBeInTheDocument();
+  });
 });
