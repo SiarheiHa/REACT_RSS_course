@@ -1,5 +1,5 @@
 import React from 'react';
-import './ProductCard.scss';
+import './CharacterCard.scss';
 import { Character } from 'types/types';
 
 function CharacterCard(props: {
