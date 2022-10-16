@@ -13,7 +13,11 @@ function Modal(props: { onClose: () => void; isOpen: boolean; children?: React.R
             onClick={(e) => e.stopPropagation()}
             data-testid="modal-wrapper"
           >
-            <button className="btn modal-close-btn" onClick={onClose}>
+            <button
+              className="btn modal-close-btn"
+              onClick={onClose}
+              data-testid="btn modal-close-btn"
+            >
               X
             </button>
             {children}

@@ -92,7 +92,7 @@ describe('ListWithSearch', () => {
     expect(screen.getByText(testResponse.docs[1].name)).toBeInTheDocument();
     userEvent.click(screen.getByText(testResponse.docs[1].name));
     expect(screen.getAllByText(testResponse.docs[1].name).length).toEqual(2);
-    const modalBtn = screen.getByRole('button');
+    const modalBtn = screen.getByTestId('btn modal-close-btn');
     expect(modalBtn).toBeInTheDocument();
     expect(screen.queryByTestId('modal-wrapper')).toBeInTheDocument();
     userEvent.click(modalBtn);

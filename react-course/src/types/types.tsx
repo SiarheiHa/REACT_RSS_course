@@ -37,6 +37,7 @@ export type ProductCardProps = {
 export type SearchBarProps = {
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   value: string;
+  disabled: boolean;
 };
 
 // Form

@@ -102,7 +102,7 @@ class ListWithSearch extends Component<Record<string, never>, ListWithSearchStat
 
     return (
       <div className="list-with-search">
-        <SearchBar onSubmit={this.onSubmit} value={searchValue} />
+        <SearchBar onSubmit={this.onSubmit} value={searchValue} disabled={isLoading} />
         {errorMessage}
         {spinner}
         {!isError && !isLoading ? content : null}
