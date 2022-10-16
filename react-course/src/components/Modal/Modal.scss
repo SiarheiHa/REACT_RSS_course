@@ -11,9 +11,6 @@
   background-color: #00000080;
   cursor: pointer;
   z-index: 5;
-  &:hover .modal-close-btn {
-    // background-color: $dark-color;
-  }
 }
 
 .modal-wrapper {
@@ -25,16 +22,9 @@
   background-color: #ffffff;
   padding: 3rem;
   border-radius: 1rem;
-  // @media (max-width: $breakpoint-tablet) {
-  //   width: 80%;
-  // }
-  // @media (max-width: $breakpoint-mobile) {
-  //   padding: 3rem 1.5rem;
-  // }
 }
 
 .modal-close-btn {
-  // @include display-flex-center;
   width: 52px;
   height: 52px;
   position: absolute;
@@ -44,12 +34,11 @@
   cursor: pointer;
   transition: 0.3s ease-in-out;
   z-index: 6;
+  font-size: 2.5rem;
+  border-color: transparent;
   &:hover {
-    // background-color: $white-color;
+    filter: invert(0.8);
   }
-  // @media (max-width: $breakpoint-mobile) {
-  //   right: -32px;
-  // }
 }
 
 .modal_wrapper:hover .modal-close-btn {

@@ -7,13 +7,20 @@ function CharacterCard(props: {
   onClick?: (character: Character) => void;
   detail?: boolean;
 }) {
-  const {
-    onClick,
-    detail,
-    character: { name, race, birth, death, gender, hair, height, realm, spouse, wikiUrl },
-  } = props;
+  const characterAdapter = ({ ...character }: Character) => {
+    for (const [key, value] of Object.entries(character)) {
+      if (!value || value === 'NaN') {
+        character[key as keyof Character] = 'no information';
+      }
+    }
+    return character;
+  };
 
-  const classes = detail ? 'product product_detail' : 'product';
+  const { onClick, detail, character } = props;
+  const { name, race, birth, death, gender, hair, height, realm, spouse, wikiUrl } =
+    characterAdapter(character);
+
+  const classes = detail ? 'character character_detail' : 'character';
 
   return (
     <div
@@ -24,25 +31,48 @@ function CharacterCard(props: {
         }
       }}
     >
-      <p>{name}</p>
-      <p>{race}</p>
+      <p className="character__title">{name}</p>
+      <p className="character__race">{race}</p>
       {detail && (
         <>
-          <p>{`birth: ${birth || 'no information'}`}</p>
-          <p>{`death: ${death || 'no information'}`}</p>
-          <p>{`gender: ${gender || 'no information'}`}</p>
-          <p>{`hair: ${hair || 'no information'}`}</p>
-          <p>{`height: ${height || 'no information'}`}</p>
-          <p>{`realm: ${realm || 'no information'}`}</p>
-          <p>{`spouse: ${spouse || 'no information'}`}</p>
           <p>
-            Read more on:{' '}
-            {
-              <a href={wikiUrl} target="_blank" rel="noreferrer">
-                lotr.fandom.com
-              </a>
-            }
+            <span className="character__field">birth: </span>
+            {birth}
           </p>
+          <p>
+            <span className="character__field">death: </span>
+            {death}
+          </p>
+          <p>
+            <span className="character__field">gender: </span>
+            {gender}
+          </p>
+          <p>
+            <span className="character__field">hair: </span>
+            {hair}
+          </p>
+          <p>
+            <span className="character__field">height: </span>
+            {height}
+          </p>
+          <p>
+            <span className="character__field">realm: </span>
+            {realm}
+          </p>
+          <p>
+            <span className="character__field">spouse: </span>
+            {spouse}
+          </p>
+          {wikiUrl && (
+            <p>
+              <span className="character__field">read more on </span>
+              {
+                <a href={wikiUrl} target="_blank" rel="noreferrer">
+                  lotr.fandom.com
+                </a>
+              }
+            </p>
+          )}
         </>
       )}
     </div>

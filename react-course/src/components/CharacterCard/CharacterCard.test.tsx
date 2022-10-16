@@ -33,13 +33,12 @@ describe('characterCard', () => {
     render(<CharacterCard {...characterCardPropsMock} detail />);
     expect(screen.getByText(/Frodo Baggins/i)).toBeInTheDocument();
     expect(screen.getByText(/hobbit/i)).toBeInTheDocument();
-    expect(screen.getByText(/birth: 22 September ,TA 2968/i)).toBeInTheDocument();
-    expect(screen.getByText(/death: Unknown/i)).toBeInTheDocument();
-    expect(screen.getByText(/gender: Male/i)).toBeInTheDocument();
-    expect(screen.getByText(/hair: Brown/i)).toBeInTheDocument();
-    expect(screen.getByText(/height: 1.06m/i)).toBeInTheDocument();
-    expect(screen.getByText(/realm: no information/i)).toBeInTheDocument();
-    expect(screen.getByText(/spouse: no information/i)).toBeInTheDocument();
+    expect(screen.getByText(/22 September ,TA 2968/i)).toBeInTheDocument();
+    expect(screen.getByText(/Unknown/i)).toBeInTheDocument();
+    expect(screen.getByText(/Male/i)).toBeInTheDocument();
+    expect(screen.getByText(/Brown/i)).toBeInTheDocument();
+    expect(screen.getByText(/1.06m/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/no information/i).length).toEqual(2);
     expect(screen.getByText(/Read more on/i)).toBeInTheDocument();
   });
 

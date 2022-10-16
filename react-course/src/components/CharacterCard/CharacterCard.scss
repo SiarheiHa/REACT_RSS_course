@@ -12,10 +12,11 @@ $color-primary-light: #fddcc4;
 $start-screen-gradient-background: #211f20;
 $footer-gradient-background: #211f20;
 
-.product {
+.character {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: space-between;
+  align-items: baseline;
   background-color: $color-light-s;
   border-radius: 1rem;
   padding: 1.5rem 1rem;
@@ -23,78 +24,43 @@ $footer-gradient-background: #211f20;
   font-size: 2rem;
   letter-spacing: 0.06em;
   color: $color-dark-l;
-  width: 30rem;
+  width: 25rem;
+  min-height: 13rem;
+  cursor: pointer;
 
   &_detail {
-    width: 100%;
+    width: auto;
+    cursor: auto;
+    .character__title {
+      font-weight: bold;
+    }
   }
   p {
     margin: 0;
     padding: 0.5rem 0;
   }
 
-  .button {
-    margin-top: 1rem;
-  }
   &:hover {
     background-color: $color-light-xl;
     box-shadow: 0px 2px 35px 14px rgba(13, 13, 13, 0.04);
-    .button {
-      cursor: pointer;
-      &:hover {
-        background-color: $color-primary-light;
-        border-color: $color-primary-light;
-      }
-    }
   }
-}
-.product__img-wrapper {
-  max-width: 50%;
-  flex-grow: 1;
-  display: flex;
-  align-items: center;
-}
-
-.product__img {
-  display: block;
-  max-width: 100%;
-}
-
-.product__title {
-  text-align: center;
-  font-size: 2.5rem;
-}
-
-.favorite-icon {
-  display: block;
-  filter: invert(32%) sepia(8%) saturate(12%) hue-rotate(347deg) brightness(95%) contrast(88%);
-  cursor: pointer;
-  &:hover {
-    filter: none;
+  &__title {
+    align-self: center;
+    font-size: 2.5rem;
   }
-  &_active {
-    filter: none;
+  &__race {
+    align-self: center;
+    font-size: 2rem;
   }
-}
+  &__field {
+    font-weight: bold;
+  }
 
-.button {
-  padding: 1.5rem 4.5rem;
-  border-radius: 10rem;
-  border: 2px solid $color-primary;
-  line-height: 130%;
-  color: $color-dark-3xl;
-  transition: all 0.3s;
-  cursor: pointer;
-  letter-spacing: 0.06em;
-  min-width: 27rem;
-  font-size: 1.5rem;
-  &::before {
-    content: 'add to cart';
-  }
-  &_active {
-    background-color: $color-primary;
-    &::before {
-      content: 'remove from cart';
+  a {
+    color: inherit;
+    text-decoration: none;
+    &:hover {
+      color: #2c0b0b;
     }
   }
 }
