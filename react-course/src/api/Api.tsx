@@ -2,8 +2,6 @@ import { Character, Endpoint, ResponseModel } from 'types/types';
 import { apiBase, apiKey } from './constants';
 
 export default class Api {
-  requestCounter = 0;
-
   async getResource(url: string): Promise<ResponseModel> {
     const res = await fetch(`${apiBase}${url}`, {
       headers: {
