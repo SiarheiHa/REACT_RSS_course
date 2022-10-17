@@ -16,7 +16,7 @@ export default class Api {
   }
 
   async getAllCharacters(): Promise<Character[]> {
-    const data = await this.getResource(Endpoint.character + '?limit=10');
+    const data = await this.getResource(Endpoint.character);
     return data.docs;
   }
 

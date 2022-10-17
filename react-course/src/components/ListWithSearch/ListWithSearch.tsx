@@ -48,12 +48,10 @@ class ListWithSearch extends Component<Record<string, never>, ListWithSearchStat
   };
 
   onError = () => {
-    // setTimeout(() => {
     this.setState({
       isError: true,
       isLoading: false,
     });
-    // }, 1500);
   };
 
   updateCharacters() {
@@ -69,13 +67,11 @@ class ListWithSearch extends Component<Record<string, never>, ListWithSearchStat
   }
 
   onCharactersLoaded = (characters: Character[]) => {
-    // setTimeout(() => {
     this.setState({
       isError: false,
       isLoading: false,
       characters: characters,
     });
-    // }, 2000);
   };
 
   onModalClose = () => {
