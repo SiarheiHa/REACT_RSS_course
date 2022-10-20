@@ -56,14 +56,10 @@ class ListWithSearch extends Component<Record<string, never>, ListWithSearchStat
 
   updateCharacters() {
     this.setState({ isLoading: true });
-    if (this.state.searchValue) {
-      this.api
-        .getCharacterBySearch(this.state.searchValue)
-        .then(this.onCharactersLoaded)
-        .catch(this.onError);
-    } else {
-      this.api.getAllCharacters().then(this.onCharactersLoaded).catch(this.onError);
-    }
+    this.api
+      .getCharacters(this.state.searchValue)
+      .then(this.onCharactersLoaded)
+      .catch(this.onError);
   }
 
   onCharactersLoaded = (characters: Character[]) => {
