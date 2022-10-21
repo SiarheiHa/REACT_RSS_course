@@ -58,7 +58,7 @@ export enum SwitcherValue {
 }
 
 export type FormProps = {
-  onFormFill: (data: Record<string, string | File>) => void;
+  onFormFill: (data: Record<string, string>) => void;
 };
 
 export type FormState = {
@@ -76,18 +76,6 @@ export type FormRefs = {
   [InputName.checkbox]: React.RefObject<HTMLInputElement>;
   [InputName.switcher]: React.RefObject<HTMLInputElement>;
   [InputName.file]: React.RefObject<HTMLInputElement>;
-};
-
-export type FormContainerState = {
-  cards: Record<string, string | File>[];
-};
-
-export type CardProps = {
-  card: Record<string, string | File>;
-};
-
-export type CardState = {
-  file: string;
 };
 
 // API

@@ -109,7 +109,7 @@ class Form extends React.PureComponent<FormProps, FormState> {
   }
 
   getInputsData() {
-    const data = Object.values(this.formRefs).reduce((acc: Record<string, string | File>, ref) => {
+    const data = Object.values(this.formRefs).reduce((acc: Record<string, string>, ref) => {
       if (!ref.current) return acc;
       const { name } = ref.current;
       if (!name || ref.current.name === InputName.checkbox) return acc;
@@ -118,7 +118,7 @@ class Form extends React.PureComponent<FormProps, FormState> {
         return acc;
       }
       if (name === InputName.file && ref.current instanceof HTMLInputElement && ref.current.files) {
-        acc[name] = ref.current.files[0];
+        acc[name] = URL.createObjectURL(ref.current.files[0]);
         return acc;
       }
       acc[name] = ref.current.value;

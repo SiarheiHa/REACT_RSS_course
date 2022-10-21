@@ -8,7 +8,7 @@ const testCart = {
   birthday: '2022-10-06',
   location: 'Anguilla',
   gender: 'male',
-  file: new File(['test'], 'test.png', { type: 'image/png' }),
+  file: '',
 };
 
 describe('Card', () => {

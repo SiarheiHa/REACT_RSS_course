@@ -10,6 +10,7 @@ describe('FormContainer', () => {
   });
 
   it('The card is rendered after submitting the correct form', async () => {
+    global.URL.createObjectURL = jest.fn();
     render(<FormContainer />);
 
     const nameInput = screen.getByLabelText('name');

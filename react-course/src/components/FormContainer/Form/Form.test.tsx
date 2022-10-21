@@ -117,6 +117,7 @@ describe('Form', () => {
   });
 
   it('inputs are empty after submit, callback to be called', () => {
+    global.URL.createObjectURL = jest.fn();
     const nameInput = screen.getByLabelText('name');
     const surnameInput = screen.getByLabelText('surname');
     const birthdayInput = screen.getByLabelText('birthday');
