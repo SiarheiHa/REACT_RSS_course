@@ -10,16 +10,15 @@ import Modal from 'components/Modal';
 import CharacterCard from 'components/CharacterCard';
 import Spinner from 'components/Spinner';
 
-class ListWithSearch extends Component<Record<string, never>, ListWithSearchState> {
-  api = new Api();
+const api = new Api();
 
+class ListWithSearch extends Component<Record<string, never>, ListWithSearchState> {
   state: ListWithSearchState = {
     characters: [],
     searchValue: localStorage.getItem('search') || '',
     selectedCharacter: null,
     isError: false,
     isLoading: false,
-    isModalOpen: false,
   };
 
   componentDidMount() {
@@ -56,10 +55,7 @@ class ListWithSearch extends Component<Record<string, never>, ListWithSearchStat
 
   updateCharacters() {
     this.setState({ isLoading: true });
-    this.api
-      .getCharacters(this.state.searchValue)
-      .then(this.onCharactersLoaded)
-      .catch(this.onError);
+    api.getCharacters(this.state.searchValue).then(this.onCharactersLoaded).catch(this.onError);
   }
 
   onCharactersLoaded = (characters: Character[]) => {
@@ -71,16 +67,15 @@ class ListWithSearch extends Component<Record<string, never>, ListWithSearchStat
   };
 
   onModalClose = () => {
-    this.setState({ isModalOpen: false });
+    this.setState({ selectedCharacter: null });
   };
 
   onCharacterClick = (character: Character) => {
-    this.setState({ selectedCharacter: character, isModalOpen: true });
+    this.setState({ selectedCharacter: character });
   };
 
   render() {
-    const { searchValue, isLoading, characters, isModalOpen, selectedCharacter, isError } =
-      this.state;
+    const { searchValue, isLoading, characters, selectedCharacter, isError } = this.state;
     const errorMessage = isError ? <p>Oops! Something went wrong...</p> : null;
     const spinner = isLoading ? <Spinner /> : null;
     const content = characters.length ? (
@@ -98,7 +93,7 @@ class ListWithSearch extends Component<Record<string, never>, ListWithSearchStat
         {errorMessage}
         {spinner}
         {!isError && !isLoading ? content : null}
-        <Modal isOpen={isModalOpen} onClose={this.onModalClose}>
+        <Modal isOpen={Boolean(selectedCharacter)} onClose={this.onModalClose}>
           {modalContent}
         </Modal>
       </div>

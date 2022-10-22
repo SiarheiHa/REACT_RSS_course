@@ -23,7 +23,6 @@ export type ListWithSearchState = {
   selectedCharacter: Character | null;
   isError: boolean;
   isLoading: boolean;
-  isModalOpen: boolean;
 };
 
 export type ProductCardProps = {
