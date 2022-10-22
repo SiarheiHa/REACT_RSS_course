@@ -1,104 +1,81 @@
-import ItemList from 'components/ItemList';
-import SearchBar from 'components/SearchBar';
+import React, { FormEvent, useEffect, useState } from 'react';
 import Api from 'api';
-import { Character, ListWithSearchState } from 'types/types';
+import CharacterCard from 'components/CharacterCard';
+import ItemList from 'components/ItemList';
+import Modal from 'components/Modal';
+import SearchBar from 'components/SearchBar';
+import Spinner from 'components/Spinner';
 
-import React, { Component, FormEvent } from 'react';
+import { Character } from 'types/types';
 
 import './ListWithSearch.scss';
-import Modal from 'components/Modal';
-import CharacterCard from 'components/CharacterCard';
-import Spinner from 'components/Spinner';
 
 const api = new Api();
 
-class ListWithSearch extends Component<Record<string, never>, ListWithSearchState> {
-  state: ListWithSearchState = {
-    characters: [],
-    searchValue: localStorage.getItem('search') || '',
-    selectedCharacter: null,
-    isError: false,
-    isLoading: false,
+const ListWithSearch = () => {
+  const [characters, setCharacters] = useState<Character[]>([]);
+  const [searchValue, setSearchValue] = useState<string>(localStorage.getItem('search') || '');
+  const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(null);
+  const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    localStorage.setItem('search', searchValue);
+  }, [searchValue]);
+
+  useEffect(() => {
+    if (isLoading) {
+      api.getCharacters(searchValue).then(onCharactersLoaded).catch(onError);
+    }
+  }, [isLoading, searchValue]);
+
+  const onError = () => {
+    setIsError(true);
+    setIsLoading(false);
   };
 
-  componentDidMount() {
-    this.updateCharacters();
-    window.addEventListener('beforeunload', this.setSearchValue);
-  }
-
-  componentWillUnmount() {
-    this.setSearchValue();
-    window.removeEventListener('beforeunload', this.setSearchValue);
-  }
-
-  setSearchValue = () => {
-    localStorage.setItem('search', this.state.searchValue);
+  const onCharactersLoaded = (characters: Character[]) => {
+    setIsError(false);
+    setIsLoading(false);
+    setCharacters(characters);
   };
 
-  onSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (e.target instanceof HTMLFormElement) {
       const formData = new FormData(e.target);
       const searchValue = String(formData.get('search') || '');
-      this.setState({ searchValue }, () => {
-        this.updateCharacters();
-      });
+      setSearchValue(searchValue);
+      setIsLoading(true);
     }
   };
 
-  onError = () => {
-    this.setState({
-      isError: true,
-      isLoading: false,
-    });
-  };
+  const onModalClose = () => setSelectedCharacter(null);
 
-  updateCharacters() {
-    this.setState({ isLoading: true });
-    api.getCharacters(this.state.searchValue).then(this.onCharactersLoaded).catch(this.onError);
-  }
+  const onCharacterClick = (character: Character) => setSelectedCharacter(character);
 
-  onCharactersLoaded = (characters: Character[]) => {
-    this.setState({
-      isError: false,
-      isLoading: false,
-      characters: characters,
-    });
-  };
+  const errorMessage = isError ? <p>Oops! Something went wrong...</p> : null;
+  const spinner = isLoading ? <Spinner /> : null;
+  const content = characters.length ? (
+    <ItemList items={characters} onClick={onCharacterClick} />
+  ) : (
+    <p>no reluts</p>
+  );
+  const modalContent = selectedCharacter ? (
+    <CharacterCard character={selectedCharacter} detail />
+  ) : null;
 
-  onModalClose = () => {
-    this.setState({ selectedCharacter: null });
-  };
-
-  onCharacterClick = (character: Character) => {
-    this.setState({ selectedCharacter: character });
-  };
-
-  render() {
-    const { searchValue, isLoading, characters, selectedCharacter, isError } = this.state;
-    const errorMessage = isError ? <p>Oops! Something went wrong...</p> : null;
-    const spinner = isLoading ? <Spinner /> : null;
-    const content = characters.length ? (
-      <ItemList items={characters} onClick={this.onCharacterClick} />
-    ) : (
-      <p>no reluts</p>
-    );
-    const modalContent = selectedCharacter ? (
-      <CharacterCard character={selectedCharacter} detail />
-    ) : null;
-
-    return (
-      <div className="list-with-search">
-        <SearchBar onSubmit={this.onSubmit} value={searchValue} disabled={isLoading} />
-        {errorMessage}
-        {spinner}
-        {!isError && !isLoading ? content : null}
-        <Modal isOpen={Boolean(selectedCharacter)} onClose={this.onModalClose}>
-          {modalContent}
-        </Modal>
-      </div>
-    );
-  }
-}
+  return (
+    <div className="list-with-search">
+      <SearchBar onSubmit={onSubmit} value={searchValue} disabled={isLoading} />
+      {errorMessage}
+      {spinner}
+      {!isError && !isLoading ? content : null}
+      <Modal isOpen={Boolean(selectedCharacter)} onClose={onModalClose}>
+        {modalContent}
+      </Modal>
+    </div>
+  );
+};
 
 export default ListWithSearch;

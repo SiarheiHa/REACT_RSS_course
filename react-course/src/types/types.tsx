@@ -17,14 +17,6 @@ export type ItemListProps = {
   onClick: (character: Character) => void;
 };
 
-export type ListWithSearchState = {
-  characters: Character[];
-  searchValue: string;
-  selectedCharacter: Character | null;
-  isError: boolean;
-  isLoading: boolean;
-};
-
 export type ProductCardProps = {
   product: Product;
   onAddToCart: (item: Product) => void;
