@@ -1,6 +1,7 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
+import { act } from 'react-dom/test-utils';
 import FormContainer from './FormContainer';
 
 describe('FormContainer', () => {
@@ -46,8 +47,11 @@ describe('FormContainer', () => {
 
     const submitButton = screen.getByRole('button');
     expect(submitButton).toBeInTheDocument();
-    userEvent.click(submitButton);
-
-    expect(screen.getByTestId('form-card'));
+    await act(async () => {
+      userEvent.click(submitButton);
+      await waitFor(() => {
+        expect(screen.findByTestId('form-card'));
+      });
+    });
   });
 });

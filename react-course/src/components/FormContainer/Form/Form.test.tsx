@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { errorMessages } from './constants';
@@ -70,28 +70,32 @@ describe('Form', () => {
     expect(submitButton).not.toBeDisabled();
   });
 
-  it('Error messages are displayed if the form is incomplete, submit is disable', () => {
+  it('Error messages are displayed if the form is incomplete, submit is disable', async () => {
     const submitButton = screen.getByRole('button');
     const nameInput = screen.getByLabelText('name');
     userEvent.type(nameInput, 't');
     userEvent.click(submitButton);
-    Object.values(errorMessages).forEach((message) => {
-      expect(screen.getByText(message)).toBeInTheDocument();
+    Object.values(errorMessages).forEach(async (message) => {
+      expect(await screen.findByText(message)).toBeInTheDocument();
     });
-    expect(submitButton).toBeDisabled();
+    await waitFor(async () => {
+      expect(await screen.findByRole('button')).toBeDisabled();
+    });
   });
 
-  it('Error message hides after typing', () => {
+  it('Error message hides after typing', async () => {
     const submitButton = screen.getByRole('button');
     const nameInput = screen.getByLabelText('surname');
     userEvent.type(nameInput, 't');
     userEvent.click(submitButton);
-    expect(screen.getByText(errorMessages.surname)).toBeInTheDocument();
-    userEvent.type(nameInput, 'new text');
-    expect(screen.queryByText(errorMessages.surname)).not.toBeInTheDocument();
+    expect(await screen.findByText(errorMessages.surname)).toBeInTheDocument();
+    userEvent.type(nameInput, 'newtext');
+    await waitFor(() => {
+      expect(screen.queryByText(errorMessages.surname)).not.toBeInTheDocument();
+    });
   });
 
-  it('submitButton are not disabled after correcting inputs', () => {
+  it('submitButton are not disabled after correcting inputs', async () => {
     const nameInput = screen.getByLabelText('name');
     const surnameInput = screen.getByLabelText('surname');
     const birthdayInput = screen.getByLabelText('birthday');
@@ -103,7 +107,9 @@ describe('Form', () => {
     userEvent.type(nameInput, 't');
     userEvent.click(submitButton);
 
-    expect(submitButton).toBeDisabled();
+    await waitFor(async () => {
+      expect(await screen.findByRole('button')).toBeDisabled();
+    });
 
     userEvent.type(nameInput, 'testname');
     userEvent.type(surnameInput, 'testsurname');
@@ -111,12 +117,19 @@ describe('Form', () => {
     userEvent.selectOptions(locationInput, ['Belarus']);
     userEvent.click(checkbox);
     const file = new File(['test'], 'test.png', { type: 'image/png' });
-    userEvent.upload(imageInput, file);
+    Object.defineProperty(imageInput, 'value', {
+      value: './test.png',
+    });
+    fireEvent.change(imageInput, {
+      target: { files: [file] },
+    });
 
-    expect(submitButton).not.toBeDisabled();
+    await waitFor(async () => {
+      expect(await screen.findByRole('button')).not.toBeDisabled();
+    });
   });
 
-  it('inputs are empty after submit, callback to be called', () => {
+  it('inputs are empty after submit, callback to be called', async () => {
     global.URL.createObjectURL = jest.fn();
     const nameInput = screen.getByLabelText('name');
     const surnameInput = screen.getByLabelText('surname');
@@ -132,13 +145,19 @@ describe('Form', () => {
     userEvent.selectOptions(locationInput, ['Belarus']);
     userEvent.click(checkbox);
     const file = new File(['test'], 'test.png', { type: 'image/png' });
-    userEvent.upload(imageInput, file);
-
+    Object.defineProperty(imageInput, 'value', {
+      value: './test.png',
+    });
+    fireEvent.change(imageInput, {
+      target: { files: [file] },
+    });
     userEvent.click(submitButton);
 
-    [nameInput, surnameInput, birthdayInput, locationInput, imageInput].forEach((input) => {
-      expect(input).toHaveDisplayValue('');
+    await waitFor(() => {
+      [nameInput, surnameInput, birthdayInput, locationInput].forEach((input) => {
+        expect(input).toHaveDisplayValue('');
+      });
+      expect(onFormfillMock).toBeCalled();
     });
-    expect(onFormfillMock).toBeCalled();
   });
 });
