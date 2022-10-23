@@ -1,5 +1,6 @@
 import React from 'react';
-import { FormProps, FormRefs, FormState, InputErrors, InputName, SwitcherValue } from 'types/types';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { FormData, InputName, SwitcherValue } from 'types/types';
 import {
   checkboxText,
   countryList,
@@ -10,173 +11,42 @@ import {
 
 import './Form.scss';
 
-class Form extends React.PureComponent<FormProps, FormState> {
-  state = {
-    isSubmitDisabled: true,
-    inputErrors: {
-      name: false,
-      surname: false,
-      birthday: false,
-      location: false,
-      checkbox: false,
-      switcher: false,
-      file: false,
-    },
-  };
+const Form = ({ onFormFill }: { onFormFill: (data: Record<string, string>) => void }) => {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isDirty },
+  } = useForm<FormData>();
 
-  formRefs: FormRefs = {
-    name: React.createRef(),
-    surname: React.createRef(),
-    birthday: React.createRef(),
-    location: React.createRef(),
-    checkbox: React.createRef(),
-    switcher: React.createRef(),
-    file: React.createRef(),
-  };
-
-  onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    this.validateForm();
-  };
-
-  onChange = (e: React.FormEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const name = e.currentTarget.name as InputName;
-
-    const toggleSubmit = () => {
-      if (!this.hasFormErrors()) {
-        this.setState({ isSubmitDisabled: false });
+  const onSubmit: SubmitHandler<FormData> = (data) => {
+    const formData = Object.entries(data).reduce((acc: Record<string, string>, [key, value]) => {
+      if (key === InputName.switcher) {
+        acc[switcherFieldName] = value ? SwitcherValue.right : SwitcherValue.left;
+      } else if (key === InputName.file) {
+        acc[key] = URL.createObjectURL(data.file[0]);
+      } else if (typeof value === 'string') {
+        acc[key] = value;
       }
-    };
-
-    if (this.state.inputErrors[name]) {
-      this.setState(({ inputErrors }) => {
-        return {
-          inputErrors: { ...inputErrors, [name]: false },
-        };
-      }, toggleSubmit);
-    }
-
-    toggleSubmit();
-  };
-
-  validateForm() {
-    const newInputErrors = inputNames.reduce((acc: InputErrors, name) => {
-      acc[name] = !this.isInputValueValid(name);
       return acc;
     }, {});
 
-    this.setState(
-      {
-        inputErrors: newInputErrors,
-        isSubmitDisabled: true,
-      },
-      () => {
-        if (!this.hasFormErrors()) {
-          this.submitFormData();
-          this.resetForm();
-        }
-      }
-    );
-  }
+    onFormFill(formData);
+    reset();
+  };
 
-  submitFormData() {
-    const data = this.getInputsData();
-    this.props.onFormFill(data);
-  }
-
-  resetForm() {
-    Object.values(this.formRefs).forEach((ref) => {
-      const element = ref.current;
-      if (element instanceof HTMLInputElement && element.type === 'checkbox') {
-        element.checked = false;
-      } else if (element) {
-        element.value = '';
-      }
-    });
-
-    this.setState({
-      isSubmitDisabled: true,
-      inputErrors: {
-        name: false,
-        surname: false,
-        birthday: false,
-        location: false,
-        checkbox: false,
-        switcher: false,
-        file: false,
-      },
-    });
-  }
-
-  getInputsData() {
-    const data = Object.values(this.formRefs).reduce((acc: Record<string, string>, ref) => {
-      if (!ref.current) return acc;
-      const { name } = ref.current;
-      if (!name || ref.current.name === InputName.checkbox) return acc;
-      if (name === InputName.switcher && ref.current instanceof HTMLInputElement) {
-        acc[switcherFieldName] = ref.current.checked ? SwitcherValue.right : SwitcherValue.left;
-        return acc;
-      }
-      if (name === InputName.file && ref.current instanceof HTMLInputElement && ref.current.files) {
-        acc[name] = URL.createObjectURL(ref.current.files[0]);
-        return acc;
-      }
-      acc[name] = ref.current.value;
-      return acc;
-    }, {});
-    return data;
-  }
-
-  isInputValueValid(name: InputName) {
-    const element = this.formRefs[name].current;
-    if (!element) return;
-    const value = element.value;
-    switch (name) {
-      case InputName.name:
-      case InputName.surname:
-        return Boolean(value.match(/^[A-zА-я]{2,}/i));
-        break;
-      case InputName.birthday:
-      case InputName.location:
-        return Boolean(value);
-        break;
-      case InputName.checkbox:
-        if (element instanceof HTMLInputElement) {
-          return element.checked;
-        }
-        break;
-      case InputName.switcher:
-        return true;
-        break;
-      case InputName.file:
-        return Boolean((element as HTMLInputElement).files?.length);
-        break;
-      default:
-        return false;
-    }
-  }
-
-  hasFormErrors() {
-    return Object.values(this.state.inputErrors).some((value) => value);
-  }
-
-  hasInputError(name: InputName) {
-    return this.state.inputErrors[name];
-  }
-
-  createInput(name: InputName) {
-    const props = {
-      name: name,
-      ref: this.formRefs[name] as React.RefObject<HTMLInputElement>,
-      onChange: this.onChange,
-    };
-
+  const createInput = (name: InputName) => {
     switch (name) {
       case InputName.birthday:
         return (
           <>
             <span className="label__title">birthday</span>
-            <input type="date" {...props} />
+            <input
+              type="date"
+              {...register(name, {
+                required: true,
+              })}
+            />
           </>
         );
       case InputName.location:
@@ -184,10 +54,10 @@ class Form extends React.PureComponent<FormProps, FormState> {
           <>
             <span className="label__title">location</span>
             <select
-              name={InputName.location}
               defaultValue={''}
-              ref={this.formRefs.location}
-              onChange={this.onChange}
+              {...register(name, {
+                required: true,
+              })}
             >
               <option value="" disabled></option>
               {countryList.map((contry) => (
@@ -200,14 +70,19 @@ class Form extends React.PureComponent<FormProps, FormState> {
         return (
           <>
             <span className="label__title">{checkboxText}</span>
-            <input type="checkbox" {...props} />
+            <input
+              type="checkbox"
+              {...register(name, {
+                required: true,
+              })}
+            />
           </>
         );
       case InputName.switcher:
         return (
           <label className="switcher">
             <span className="switcher__text">{SwitcherValue.left}</span>
-            <input type="checkbox" {...props} />
+            <input type="checkbox" {...register(name)} />
             <span className="switcher__text">{SwitcherValue.right}</span>
           </label>
         );
@@ -215,40 +90,48 @@ class Form extends React.PureComponent<FormProps, FormState> {
         return (
           <>
             <span className="label__title">Avatar</span>
-            <input type="file" accept=".png, .jpg, .jpeg" {...props} />
+            <input
+              type="file"
+              accept=".png, .jpg, .jpeg"
+              {...register(name, {
+                required: true,
+              })}
+            />
           </>
         );
       default:
         return (
           <>
             <span className="label__title">{name}</span>
-            <input type="text" {...props} />
+            <input
+              type="text"
+              {...register(name, {
+                required: true,
+                minLength: 2,
+                pattern: /^[A-Za-z-А-Яа-я]+$/i,
+              })}
+            />
           </>
         );
     }
-  }
+  };
 
-  render() {
-    const inputs = inputNames.map((inputName) => {
-      const errorMessage = this.hasInputError(inputName) ? (
-        <span className="error-message">{errorMessages[inputName]}</span>
-      ) : null;
-
-      return (
-        <label key={inputName}>
-          {this.createInput(inputName)}
-          {errorMessage}
-        </label>
-      );
-    });
-
+  const inputs = inputNames.map((inputName) => {
     return (
-      <form className="form-page__form" onSubmit={this.onSubmit} name="form">
-        {inputs}
-        <input type="submit" value="submit" disabled={this.state.isSubmitDisabled} />
-      </form>
+      <label key={inputName}>
+        {createInput(inputName)}
+        {errors[inputName] && <span className="error-message">{errorMessages[inputName]}</span>}
+      </label>
     );
-  }
-}
+  });
+
+  const isDisabled = Boolean(!isDirty || Object.keys(errors).length);
+  return (
+    <form className="form-page__form" onSubmit={handleSubmit(onSubmit)} name="form">
+      {inputs}
+      <input type="submit" value="submit" disabled={isDisabled} />
+    </form>
+  );
+};
 
 export default Form;

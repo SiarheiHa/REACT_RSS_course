@@ -48,25 +48,14 @@ export enum SwitcherValue {
   right = 'female',
 }
 
-export type FormProps = {
-  onFormFill: (data: Record<string, string>) => void;
-};
-
-export type FormState = {
-  isSubmitDisabled: boolean;
-  inputErrors: InputErrors;
-};
-
-export type InputErrors = Partial<Record<InputName, boolean>>;
-
-export type FormRefs = {
-  [InputName.name]: React.RefObject<HTMLInputElement>;
-  [InputName.surname]: React.RefObject<HTMLInputElement>;
-  [InputName.birthday]: React.RefObject<HTMLInputElement>;
-  [InputName.location]: React.RefObject<HTMLSelectElement>;
-  [InputName.checkbox]: React.RefObject<HTMLInputElement>;
-  [InputName.switcher]: React.RefObject<HTMLInputElement>;
-  [InputName.file]: React.RefObject<HTMLInputElement>;
+export type FormData = {
+  [InputName.name]: string;
+  [InputName.surname]: string;
+  [InputName.birthday]: string;
+  [InputName.location]: string;
+  [InputName.checkbox]: boolean;
+  [InputName.switcher]: boolean;
+  [InputName.file]: FileList;
 };
 
 // API
