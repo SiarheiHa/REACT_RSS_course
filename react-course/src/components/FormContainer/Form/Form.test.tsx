@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { errorMessages } from './constants';
@@ -120,9 +120,7 @@ describe('Form', () => {
     Object.defineProperty(imageInput, 'value', {
       value: './test.png',
     });
-    fireEvent.change(imageInput, {
-      target: { files: [file] },
-    });
+    userEvent.upload(imageInput, file);
 
     await waitFor(async () => {
       expect(await screen.findByRole('button')).not.toBeDisabled();
@@ -148,9 +146,7 @@ describe('Form', () => {
     Object.defineProperty(imageInput, 'value', {
       value: './test.png',
     });
-    fireEvent.change(imageInput, {
-      target: { files: [file] },
-    });
+    userEvent.upload(imageInput, file);
     userEvent.click(submitButton);
 
     await waitFor(() => {
