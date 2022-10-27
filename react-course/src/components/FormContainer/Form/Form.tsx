@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { FormData, InputName, SwitcherValue } from 'types/types';
 import Input from '../Input';
@@ -13,8 +13,6 @@ const Form = ({ onFormFill }: { onFormFill: (data: Record<string, string>) => vo
     reset,
     formState: { errors, isDirty },
   } = useForm<FormData>();
-
-  const memoizedRegister = useCallback(register, [register]);
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
     const formData = Object.entries(data).reduce((acc: Record<string, string>, [key, value]) => {
@@ -35,7 +33,7 @@ const Form = ({ onFormFill }: { onFormFill: (data: Record<string, string>) => vo
   const inputs = inputNames.map((inputName) => {
     return (
       <label key={inputName}>
-        <Input name={inputName} register={memoizedRegister} />
+        <Input name={inputName} register={register} />
         {errors[inputName] && <span className="error-message">{errorMessages[inputName]}</span>}
       </label>
     );
