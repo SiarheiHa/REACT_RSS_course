@@ -273,3 +273,6 @@ export const countryList = [
   'Zimbabwe',
   'Åland Islands',
 ];
+
+// for testing
+// export const countryList = ['Afghanistan', 'Belarus'];

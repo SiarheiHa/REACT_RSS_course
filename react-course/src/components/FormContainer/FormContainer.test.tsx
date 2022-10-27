@@ -1,7 +1,6 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
-import { act } from 'react-dom/test-utils';
 import FormContainer from './FormContainer';
 
 describe('FormContainer', () => {
@@ -42,16 +41,18 @@ describe('FormContainer', () => {
     const imageInput = screen.getByLabelText('Avatar') as HTMLInputElement;
     expect(imageInput).toBeInTheDocument();
     const file = new File(['test'], 'test.png', { type: 'image/png' });
+    Object.defineProperty(imageInput, 'value', {
+      value: './test.png',
+    });
     userEvent.upload(imageInput, file);
     expect(imageInput.files![0]).toStrictEqual(file);
 
     const submitButton = screen.getByRole('button');
     expect(submitButton).toBeInTheDocument();
-    await act(async () => {
-      userEvent.click(submitButton);
-      await waitFor(() => {
-        expect(screen.findByTestId('form-card'));
-      });
+    userEvent.click(submitButton);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('form-card')).toBeInTheDocument();
     });
   });
 });
