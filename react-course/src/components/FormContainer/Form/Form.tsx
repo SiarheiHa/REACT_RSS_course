@@ -41,7 +41,7 @@ const Form = ({ onFormFill }: { onFormFill: (data: Record<string, string>) => vo
     );
   });
 
-  const isDisabled = Boolean(!isDirty || Object.keys(errors).length);
+  const isDisabled = !!(!isDirty || Object.keys(errors).length);
   return (
     <form className="form-page__form" onSubmit={handleSubmit(onSubmit)} name="form">
       {inputs}

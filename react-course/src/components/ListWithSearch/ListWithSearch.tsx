@@ -16,27 +16,24 @@ const ListWithSearch = () => {
   const [characters, setCharacters] = useState<Character[]>([]);
   const [searchValue, setSearchValue] = useState<string>(localStorage.getItem('search') || '');
   const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(null);
-  const [isError, setIsError] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [status, setStatus] = useState({ loading: true, error: false });
 
   useEffect(() => {
     localStorage.setItem('search', searchValue);
   }, [searchValue]);
 
   useEffect(() => {
-    if (isLoading) {
+    if (status.loading) {
       api.getCharacters(searchValue).then(onCharactersLoaded).catch(onError);
     }
-  }, [isLoading, searchValue]);
+  }, [status, searchValue]);
 
   const onError = () => {
-    setIsError(true);
-    setIsLoading(false);
+    setStatus({ loading: false, error: true });
   };
 
   const onCharactersLoaded = (characters: Character[]) => {
-    setIsError(false);
-    setIsLoading(false);
+    setStatus({ loading: false, error: false });
     setCharacters(characters);
   };
 
@@ -46,7 +43,9 @@ const ListWithSearch = () => {
       const formData = new FormData(e.target);
       const searchValue = String(formData.get('search') || '');
       setSearchValue(searchValue);
-      setIsLoading(true);
+      setStatus((prevStatus) => {
+        return { ...prevStatus, loading: true };
+      });
     }
   };
 
@@ -54,8 +53,8 @@ const ListWithSearch = () => {
 
   const onCharacterClick = (character: Character) => setSelectedCharacter(character);
 
-  const errorMessage = isError ? <p>Oops! Something went wrong...</p> : null;
-  const spinner = isLoading ? <Spinner /> : null;
+  const errorMessage = status.error ? <p>Oops! Something went wrong...</p> : null;
+  const spinner = status.loading ? <Spinner /> : null;
   const content = characters.length ? (
     <ItemList items={characters} onClick={onCharacterClick} />
   ) : (
@@ -67,10 +66,10 @@ const ListWithSearch = () => {
 
   return (
     <div className="list-with-search">
-      <SearchBar onSubmit={onSubmit} value={searchValue} disabled={isLoading} />
+      <SearchBar onSubmit={onSubmit} value={searchValue} disabled={status.loading} />
       {errorMessage}
       {spinner}
-      {!isError && !isLoading ? content : null}
+      {!status.error && !status.loading ? content : null}
       <Modal isOpen={Boolean(selectedCharacter)} onClose={onModalClose}>
         {modalContent}
       </Modal>
