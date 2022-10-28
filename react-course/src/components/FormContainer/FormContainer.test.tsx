@@ -1,5 +1,6 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { AppState } from 'context';
 import React from 'react';
 import FormContainer from './FormContainer';
 
@@ -11,7 +12,11 @@ describe('FormContainer', () => {
 
   it('The card is rendered after submitting the correct form', async () => {
     global.URL.createObjectURL = jest.fn();
-    render(<FormContainer />);
+    render(
+      <AppState>
+        <FormContainer />
+      </AppState>
+    );
 
     const nameInput = screen.getByLabelText('name');
     expect(nameInput).toBeInTheDocument();

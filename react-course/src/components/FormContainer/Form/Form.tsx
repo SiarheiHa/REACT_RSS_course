@@ -1,12 +1,15 @@
-import React from 'react';
+import { AppContext } from 'context/AppState';
+import React, { useContext } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { FormData, InputName, SwitcherValue } from 'types/types';
+import { ActionType, FormData, InputName, SwitcherValue } from 'types/types';
 import Input from '../Input';
 import { errorMessages, inputNames, switcherFieldName } from './constants';
 
 import './Form.scss';
 
-const Form = ({ onFormFill }: { onFormFill: (data: Record<string, string>) => void }) => {
+const Form = () => {
+  const { state, dispatch } = useContext(AppContext);
+
   const {
     register,
     handleSubmit,
@@ -26,7 +29,12 @@ const Form = ({ onFormFill }: { onFormFill: (data: Record<string, string>) => vo
       return acc;
     }, {});
 
-    onFormFill(formData);
+    dispatch({
+      type: ActionType.ADD_CARD,
+      payload: formData,
+    });
+
+    // onFormFill(formData);
     reset();
   };
 

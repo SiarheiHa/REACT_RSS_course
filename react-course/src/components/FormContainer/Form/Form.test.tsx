@@ -5,9 +5,8 @@ import { errorMessages } from './constants';
 import Form from './Form';
 
 describe('Form', () => {
-  const onFormfillMock = jest.fn();
   beforeEach(() => {
-    render(<Form onFormFill={onFormfillMock} />);
+    render(<Form />);
   });
 
   it('Form renders', () => {
@@ -127,7 +126,7 @@ describe('Form', () => {
     });
   });
 
-  it('inputs are empty after submit, callback to be called', async () => {
+  it('inputs are empty after submit', async () => {
     global.URL.createObjectURL = jest.fn();
     const nameInput = screen.getByLabelText('name');
     const surnameInput = screen.getByLabelText('surname');
@@ -153,7 +152,6 @@ describe('Form', () => {
       [nameInput, surnameInput, birthdayInput, locationInput].forEach((input) => {
         expect(input).toHaveDisplayValue('');
       });
-      expect(onFormfillMock).toBeCalled();
     });
   });
 });

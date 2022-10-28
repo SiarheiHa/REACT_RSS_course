@@ -1,3 +1,5 @@
+import React from 'react';
+
 export interface Product {
   _id: string;
   set: string;
@@ -84,4 +86,31 @@ export type ResponseModel = {
   offset: number;
   page: number;
   pages: number;
+};
+
+// custom state
+export enum ActionType {
+  ADD_CARD = 'ADD_CARD',
+}
+
+export type ActionModel = {
+  type: ActionType;
+};
+
+export type CardData = Record<string, string>;
+
+export type AppStateType = {
+  cards: CardData[];
+};
+
+export interface SaveCardAction extends ActionModel {
+  type: ActionType.ADD_CARD;
+  payload: CardData;
+}
+
+export type Action = SaveCardAction;
+
+export type AppContextType = {
+  state: AppStateType;
+  dispatch: React.Dispatch<Action>;
 };
