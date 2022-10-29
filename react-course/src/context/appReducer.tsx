@@ -8,6 +8,7 @@ export const appReducer = (state: AppStateType, action: Action) => {
         ...state,
         cards: [...state.cards, action.payload],
         inputsValues: null,
+        hasFormErrors: false,
       };
     case ActionType.SAVE_INPUT_VALUES:
       return {
@@ -17,7 +18,7 @@ export const appReducer = (state: AppStateType, action: Action) => {
     case ActionType.SAVE_ERRORS:
       return {
         ...state,
-        fieldsWithErrors: action.payload,
+        hasFormErrors: true,
       };
     default:
       return state;

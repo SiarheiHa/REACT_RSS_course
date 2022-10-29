@@ -9,7 +9,7 @@ import './Form.scss';
 
 const Form = () => {
   const {
-    state: { inputsValues, fieldsWithErrors },
+    state: { inputsValues, hasFormErrors },
     dispatch,
   } = useContext(AppContext);
 
@@ -20,49 +20,18 @@ const Form = () => {
     formState: { errors, isDirty, isSubmitSuccessful },
     getValues,
     setValue,
-    setError,
     trigger,
   } = useForm<FormData>();
 
   //сохраняет в контекст данные инпутов при анмаунте
   useEffect(() => {
-    console.log('effect');
     return () => {
-      console.log('return');
       dispatch({
         type: ActionType.SAVE_INPUT_VALUES,
         payload: getValues(),
       });
     };
   }, [dispatch, getValues]);
-
-  // сохранение ошибок
-  useEffect(() => {
-    return () => {
-      dispatch({
-        type: ActionType.SAVE_ERRORS,
-        payload: Object.keys(errors) as InputName[],
-      });
-    };
-  }, [dispatch, errors]);
-
-  // устаналивает ошибки
-  useEffect(() => {
-    if (fieldsWithErrors.length) {
-      // fieldsWithErrors.forEach((key) => {
-      //   setError(key, {});
-      // });
-      console.log('trigger');
-      trigger();
-    }
-  }, [fieldsWithErrors, setError]);
-
-  // сброс формы при успешном сабмите
-  useEffect(() => {
-    if (isSubmitSuccessful) {
-      reset();
-    }
-  }, [isSubmitSuccessful, reset]);
 
   // устанавливает значения в инпуты
   useEffect(() => {
@@ -72,6 +41,32 @@ const Form = () => {
       });
     }
   }, [inputsValues, setValue]);
+
+  // сохранение флага наличия ошибок в контекст
+  useEffect(() => {
+    return () => {
+      if (Object.keys(errors).length) {
+        dispatch({
+          type: ActionType.SAVE_ERRORS,
+          payload: true,
+        });
+      }
+    };
+  }, [dispatch, errors]);
+
+  // тригеррит валидацию если ошибки есть в контексте
+  useEffect(() => {
+    if (hasFormErrors) {
+      trigger();
+    }
+  }, [hasFormErrors, trigger]);
+
+  // сброс формы при успешном сабмите
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset();
+    }
+  }, [isSubmitSuccessful, reset]);
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
     const formData = Object.entries(data).reduce((acc: Record<string, string>, [key, value]) => {
@@ -93,7 +88,6 @@ const Form = () => {
 
   const onChange = () => {
     if (Object.keys(errors).length) {
-      console.log('trigger onChange');
       trigger();
     }
   };

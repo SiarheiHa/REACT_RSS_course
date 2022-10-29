@@ -104,7 +104,7 @@ export type CardData = Record<string, string>;
 export type AppStateType = {
   cards: CardData[];
   inputsValues: FormData | null;
-  fieldsWithErrors: InputName[];
+  hasFormErrors: boolean;
 };
 
 export interface SaveCardAction extends ActionModel {
@@ -119,7 +119,7 @@ export interface SaveInputsValues extends ActionModel {
 
 export interface SaveErrors extends ActionModel {
   type: ActionType.SAVE_ERRORS;
-  payload: InputName[];
+  payload: boolean;
 }
 
 export type Action = SaveCardAction | SaveInputsValues | SaveErrors;

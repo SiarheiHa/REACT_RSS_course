@@ -5,7 +5,7 @@ import { appReducer } from './appReducer';
 const initialState: AppStateType = {
   cards: [],
   inputsValues: null,
-  fieldsWithErrors: [],
+  hasFormErrors: false,
 };
 
 const initialContext: AppContextType = {
