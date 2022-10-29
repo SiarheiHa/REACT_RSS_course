@@ -57,7 +57,7 @@ export type FormData = {
   [InputName.location]: string;
   [InputName.checkbox]: boolean;
   [InputName.switcher]: boolean;
-  [InputName.file]: FileList;
+  [InputName.file]: FileList | null;
 };
 
 // API
@@ -91,6 +91,8 @@ export type ResponseModel = {
 // custom state
 export enum ActionType {
   ADD_CARD = 'ADD_CARD',
+  SAVE_INPUT_VALUES = 'SAVE_INPUTS_VALUES',
+  SAVE_ERRORS = 'SAVE_ERRORS',
 }
 
 export type ActionModel = {
@@ -101,6 +103,8 @@ export type CardData = Record<string, string>;
 
 export type AppStateType = {
   cards: CardData[];
+  inputsValues: FormData | null;
+  fieldsWithErrors: InputName[];
 };
 
 export interface SaveCardAction extends ActionModel {
@@ -108,7 +112,17 @@ export interface SaveCardAction extends ActionModel {
   payload: CardData;
 }
 
-export type Action = SaveCardAction;
+export interface SaveInputsValues extends ActionModel {
+  type: ActionType.SAVE_INPUT_VALUES;
+  payload: FormData;
+}
+
+export interface SaveErrors extends ActionModel {
+  type: ActionType.SAVE_ERRORS;
+  payload: InputName[];
+}
+
+export type Action = SaveCardAction | SaveInputsValues | SaveErrors;
 
 export type AppContextType = {
   state: AppStateType;

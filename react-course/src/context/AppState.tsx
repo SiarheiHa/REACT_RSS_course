@@ -4,6 +4,8 @@ import { appReducer } from './appReducer';
 
 const initialState: AppStateType = {
   cards: [],
+  inputsValues: null,
+  fieldsWithErrors: [],
 };
 
 const initialContext: AppContextType = {
