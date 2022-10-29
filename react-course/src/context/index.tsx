@@ -1,4 +1,4 @@
-import { AppState } from './AppState';
-import { appReducer } from './appReducer';
+import { FormState } from './FormState';
+import { formReducer } from './formReducer';
 
-export { AppState, appReducer };
+export { formReducer, FormState };

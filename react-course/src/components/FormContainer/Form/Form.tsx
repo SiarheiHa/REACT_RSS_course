@@ -1,7 +1,7 @@
-import { AppContext } from 'context/AppState';
+import { FormContext } from 'context/FormState';
 import React, { useContext, useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { ActionType, FormData, InputName, SwitcherValue } from 'types/types';
+import { FormActionType, FormData, InputName, SwitcherValue } from 'types/types';
 import Input from '../Input';
 import { errorMessages, inputNames, switcherFieldName } from './constants';
 
@@ -11,7 +11,7 @@ const Form = () => {
   const {
     state: { inputsValues, hasFormErrors },
     dispatch,
-  } = useContext(AppContext);
+  } = useContext(FormContext);
 
   const {
     register,
@@ -27,7 +27,7 @@ const Form = () => {
   useEffect(() => {
     return () => {
       dispatch({
-        type: ActionType.SAVE_INPUT_VALUES,
+        type: FormActionType.SAVE_INPUT_VALUES,
         payload: getValues(),
       });
     };
@@ -47,8 +47,7 @@ const Form = () => {
     return () => {
       if (Object.keys(errors).length) {
         dispatch({
-          type: ActionType.SAVE_ERRORS,
-          payload: true,
+          type: FormActionType.SAVE_ERRORS,
         });
       }
     };
@@ -81,7 +80,7 @@ const Form = () => {
     }, {});
 
     dispatch({
-      type: ActionType.ADD_CARD,
+      type: FormActionType.ADD_CARD,
       payload: formData,
     });
   };

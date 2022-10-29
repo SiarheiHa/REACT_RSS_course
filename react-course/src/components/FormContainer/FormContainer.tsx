@@ -1,4 +1,4 @@
-import { AppContext } from 'context/AppState';
+import { FormContext } from 'context/FormState';
 import React, { useContext } from 'react';
 import CardList from './CardList';
 import Form from './Form';
@@ -6,7 +6,7 @@ import Form from './Form';
 import './FormContainer.scss';
 
 const FormContainer = () => {
-  const { state } = useContext(AppContext);
+  const { state } = useContext(FormContext);
 
   return (
     <div data-testid="form-container">

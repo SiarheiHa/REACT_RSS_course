@@ -89,42 +89,41 @@ export type ResponseModel = {
 };
 
 // custom state
-export enum ActionType {
+export enum FormActionType {
   ADD_CARD = 'ADD_CARD',
   SAVE_INPUT_VALUES = 'SAVE_INPUTS_VALUES',
   SAVE_ERRORS = 'SAVE_ERRORS',
 }
 
-export type ActionModel = {
-  type: ActionType;
+export type FormActionModel = {
+  type: FormActionType;
 };
 
 export type CardData = Record<string, string>;
 
-export type AppStateType = {
+export type FormStateType = {
   cards: CardData[];
   inputsValues: FormData | null;
   hasFormErrors: boolean;
 };
 
-export interface SaveCardAction extends ActionModel {
-  type: ActionType.ADD_CARD;
+export interface SaveCardAction extends FormActionModel {
+  type: FormActionType.ADD_CARD;
   payload: CardData;
 }
 
-export interface SaveInputsValues extends ActionModel {
-  type: ActionType.SAVE_INPUT_VALUES;
+export interface SaveInputsValues extends FormActionModel {
+  type: FormActionType.SAVE_INPUT_VALUES;
   payload: FormData;
 }
 
-export interface SaveErrors extends ActionModel {
-  type: ActionType.SAVE_ERRORS;
-  payload: boolean;
+export interface SaveErrors extends FormActionModel {
+  type: FormActionType.SAVE_ERRORS;
 }
 
-export type Action = SaveCardAction | SaveInputsValues | SaveErrors;
+export type FormAction = SaveCardAction | SaveInputsValues | SaveErrors;
 
-export type AppContextType = {
-  state: AppStateType;
-  dispatch: React.Dispatch<Action>;
+export type FormContextType = {
+  state: FormStateType;
+  dispatch: React.Dispatch<FormAction>;
 };

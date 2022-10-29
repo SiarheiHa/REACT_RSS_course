@@ -1,6 +1,6 @@
 import Header from 'components/Header';
 import { AboutPage, FormPage, MainPage, NotFoundPage } from 'components/pages';
-import { AppState } from 'context';
+import { FormState } from './context';
 import React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
@@ -8,7 +8,7 @@ import './App.scss';
 
 function App() {
   return (
-    <AppState>
+    <FormState>
       <Header />
       <main>
         <Routes>
@@ -19,7 +19,7 @@ function App() {
           <Route path="*" element={<Navigate to={'/404'} replace />} />
         </Routes>
       </main>
-    </AppState>
+    </FormState>
   );
 }
 
