@@ -1,4 +1,5 @@
-import { Character, Endpoint, ResponseModel } from 'types/types';
+import { Character, Endpoint, ResponseModel, Sorting } from 'types/types';
+import { runInThisContext } from 'vm';
 import { apiBase, apiKey } from './constants';
 
 export default class Api {
@@ -18,5 +19,22 @@ export default class Api {
   async getCharacters(value: string): Promise<Character[]> {
     const data = await this.getResource(Endpoint.character + `?name=/${value}/i`);
     return data.docs;
+  }
+
+  getPaginatedData(
+    page: string,
+    limit: string,
+    sorting: string,
+    searchValue: string
+  ): Promise<ResponseModel> {
+    console.log('request');
+    let queriString = `?limit=${limit}&page=${page}`;
+    if (searchValue) {
+      queriString += `&name=/${searchValue}/i`;
+    }
+    if (sorting !== Sorting.DEFAULT) {
+      queriString += `&sort=name:${sorting}`;
+    }
+    return this.getResource(Endpoint.character + queriString);
   }
 }

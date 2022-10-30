@@ -114,22 +114,45 @@ export type CharactersStateType = {
   limit: string;
   pages: string;
   sorting: Sorting;
+  searchValue: string;
 };
 
 export enum CharactersActionType {
+  // pagination
   SET_CURRENT_PAGE = 'SET_CURRENT_PAGE',
+  SET_LIMIT = 'SET_LIMIT',
+  SET_SORTING = 'SET_SORTING',
+  //characters list
+  SET_SEARCH = 'SET_SEARCH',
+  SET_CHARACTERS = 'SET_CHARACTERS',
 }
 
 export type CharactersActionModel = {
   type: CharactersActionType;
 };
-
 export interface SetCurrentPage extends CharactersActionModel {
   type: CharactersActionType.SET_CURRENT_PAGE;
   payload: string;
 }
+export interface SetLimit extends CharactersActionModel {
+  type: CharactersActionType.SET_LIMIT;
+  payload: string;
+}
+export interface SetSorting extends CharactersActionModel {
+  type: CharactersActionType.SET_SORTING;
+  payload: Sorting;
+}
+export interface SetSearch extends CharactersActionModel {
+  type: CharactersActionType.SET_SEARCH;
+  payload: string;
+}
 
-export type CharactersAction = SetCurrentPage;
+export interface SetCharacters extends CharactersActionModel {
+  type: CharactersActionType.SET_CHARACTERS;
+  payload: ResponseModel;
+}
+
+export type CharactersAction = SetCurrentPage | SetLimit | SetSorting | SetSearch | SetCharacters;
 
 export type CharactersContextType = {
   state: CharactersStateType;
@@ -137,7 +160,7 @@ export type CharactersContextType = {
 };
 
 export enum Sorting {
-  ASC = 'ASC',
-  DESC = 'DESC',
-  DEFAULT = 'DEFAULT',
+  ASC = 'asc',
+  DESC = 'desc',
+  DEFAULT = 'default',
 }

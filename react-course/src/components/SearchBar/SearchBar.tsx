@@ -1,12 +1,30 @@
-import React from 'react';
-import { SearchBarProps } from 'types/types';
+import { CharactersContext } from 'context/CharactersState';
+import React, { FormEvent, useContext } from 'react';
+import { CharactersActionType, SearchBarProps } from 'types/types';
 import './SearchBar.scss';
 
-const SearchBar = ({ onSubmit, value, disabled }: SearchBarProps) => {
+const SearchBar = ({ disabled }: { disabled: boolean }) => {
+  const {
+    state: { searchValue },
+    dispatch,
+  } = useContext(CharactersContext);
+
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (e.target instanceof HTMLFormElement) {
+      const formData = new FormData(e.target);
+      const value = String(formData.get('search') || '');
+      dispatch({
+        type: CharactersActionType.SET_SEARCH,
+        payload: value,
+      });
+    }
+  };
+
   return (
     <form onSubmit={onSubmit}>
       <input
-        defaultValue={value}
+        defaultValue={searchValue}
         className="search-bar"
         type="search"
         name="search"

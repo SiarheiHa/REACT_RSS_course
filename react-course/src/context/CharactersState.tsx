@@ -4,10 +4,11 @@ import { charactersReducer } from './charactersReducer';
 
 const initialCharactersState: CharactersStateType = {
   characters: [],
-  currentPage: '4',
-  limit: '50',
-  pages: '25',
-  sorting: Sorting.ASC,
+  currentPage: '1',
+  limit: '20',
+  pages: '',
+  sorting: Sorting.DEFAULT,
+  searchValue: localStorage.getItem('search') || '',
 };
 
 const initialCharactersContext: CharactersContextType = {

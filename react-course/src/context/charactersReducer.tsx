@@ -8,6 +8,28 @@ export const charactersReducer = (state: CharactersStateType, action: Characters
         ...state,
         currentPage: action.payload,
       };
+    case CharactersActionType.SET_LIMIT:
+      return {
+        ...state,
+        limit: action.payload,
+      };
+    case CharactersActionType.SET_SORTING:
+      return {
+        ...state,
+        sorting: action.payload,
+      };
+    case CharactersActionType.SET_SEARCH:
+      return {
+        ...state,
+        searchValue: action.payload,
+        currentPage: '1',
+      };
+    case CharactersActionType.SET_CHARACTERS:
+      return {
+        ...state,
+        characters: action.payload.docs,
+        pages: String(action.payload.pages),
+      };
     default:
       return state;
   }

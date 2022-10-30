@@ -1,53 +1,50 @@
-import React, { FormEvent, useEffect, useState } from 'react';
+import React, { FormEvent, useContext, useEffect, useState } from 'react';
 import Api from 'api';
 import CharacterCard from 'components/CharacterCard';
 import ItemList from 'components/ItemList';
 import Modal from 'components/Modal';
 import SearchBar from 'components/SearchBar';
 import Spinner from 'components/Spinner';
-
-import { Character } from 'types/types';
-
+import { Character, CharactersActionType, ResponseModel } from 'types/types';
 import './ListWithSearch.scss';
 import Pagination from 'components/Pagination';
+import { CharactersContext } from 'context/CharactersState';
 
 const api = new Api();
 
 const ListWithSearch = () => {
-  const [characters, setCharacters] = useState<Character[]>([]);
-  const [searchValue, setSearchValue] = useState<string>(localStorage.getItem('search') || '');
   const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(null);
-  const [status, setStatus] = useState({ loading: true, error: false });
+  const [status, setStatus] = useState({ loading: false, error: false });
+
+  const {
+    state: { characters, currentPage, limit, sorting, searchValue },
+    dispatch,
+  } = useContext(CharactersContext);
 
   useEffect(() => {
     localStorage.setItem('search', searchValue);
   }, [searchValue]);
 
   useEffect(() => {
-    if (status.loading) {
-      api.getCharacters(searchValue).then(onCharactersLoaded).catch(onError);
-    }
-  }, [status, searchValue]);
+    const onCharactersLoaded = (data: ResponseModel) => {
+      setStatus({ loading: false, error: false });
+      dispatch({
+        type: CharactersActionType.SET_CHARACTERS,
+        payload: data,
+      });
+    };
+
+    api
+      .getPaginatedData(currentPage, limit, sorting, searchValue)
+      .then(onCharactersLoaded)
+      .catch(onError);
+    setStatus((prevStatus) => {
+      return { ...prevStatus, loading: true };
+    });
+  }, [currentPage, limit, sorting, searchValue, dispatch]);
 
   const onError = () => {
     setStatus({ loading: false, error: true });
-  };
-
-  const onCharactersLoaded = (characters: Character[]) => {
-    setStatus({ loading: false, error: false });
-    setCharacters(characters);
-  };
-
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (e.target instanceof HTMLFormElement) {
-      const formData = new FormData(e.target);
-      const searchValue = String(formData.get('search') || '');
-      setSearchValue(searchValue);
-      setStatus((prevStatus) => {
-        return { ...prevStatus, loading: true };
-      });
-    }
   };
 
   const onModalClose = () => setSelectedCharacter(null);
@@ -67,7 +64,7 @@ const ListWithSearch = () => {
 
   return (
     <div className="list-with-search">
-      <SearchBar onSubmit={onSubmit} value={searchValue} disabled={status.loading} />
+      <SearchBar disabled={status.loading} />
       <Pagination />
       {errorMessage}
       {spinner}

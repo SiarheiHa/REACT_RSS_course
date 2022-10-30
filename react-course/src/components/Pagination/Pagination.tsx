@@ -1,6 +1,6 @@
 import { CharactersContext } from 'context/CharactersState';
 import React, { useContext } from 'react';
-import { CharactersActionType, CharactersStateType } from 'types/types';
+import { CharactersActionType, Sorting } from 'types/types';
 import { paginationLimits, sortings } from './constants';
 
 const Pagination = () => {
@@ -30,11 +30,19 @@ const Pagination = () => {
           type: CharactersActionType.SET_CURRENT_PAGE,
           payload: value,
         });
+        break;
+      case 'limit':
+        dispatch({
+          type: CharactersActionType.SET_LIMIT,
+          payload: value,
+        });
+        break;
+      case 'sorting':
+        dispatch({
+          type: CharactersActionType.SET_SORTING,
+          payload: value as Sorting,
+        });
     }
-    // dispatch({
-    //   type: CharactersActionType.SET_PAGINATION,
-    //   payload: { [name]: value } as unknown as Record<keyof CharactersStateType, string>,
-    // });
   };
 
   return (
