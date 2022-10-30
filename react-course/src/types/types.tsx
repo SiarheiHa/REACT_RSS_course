@@ -1,30 +1,8 @@
 import React from 'react';
 
-export interface Product {
-  _id: string;
-  set: string;
-  item_id: number;
-  reviews: number | null;
-  rating: string;
-  availability: string;
-  price: number;
-  images: string[];
-  ages: string;
-  pieces: number;
-  __v: number;
-}
-
 export type ItemListProps = {
   items: Character[];
   onClick: (character: Character) => void;
-};
-
-export type ProductCardProps = {
-  product: Product;
-  onAddToCart: (item: Product) => void;
-  onClickFavorite: (item: Product) => void;
-  isInCart: boolean;
-  isInFavorites: boolean;
 };
 
 export type SearchBarProps = {
@@ -89,6 +67,7 @@ export type ResponseModel = {
 };
 
 // custom state
+//form
 export enum FormActionType {
   ADD_CARD = 'ADD_CARD',
   SAVE_INPUT_VALUES = 'SAVE_INPUTS_VALUES',
@@ -127,3 +106,38 @@ export type FormContextType = {
   state: FormStateType;
   dispatch: React.Dispatch<FormAction>;
 };
+
+//characters
+export type CharactersStateType = {
+  characters: Character[];
+  currentPage: string;
+  limit: string;
+  pages: string;
+  sorting: Sorting;
+};
+
+export enum CharactersActionType {
+  SET_CURRENT_PAGE = 'SET_CURRENT_PAGE',
+}
+
+export type CharactersActionModel = {
+  type: CharactersActionType;
+};
+
+export interface SetCurrentPage extends CharactersActionModel {
+  type: CharactersActionType.SET_CURRENT_PAGE;
+  payload: string;
+}
+
+export type CharactersAction = SetCurrentPage;
+
+export type CharactersContextType = {
+  state: CharactersStateType;
+  dispatch: React.Dispatch<CharactersAction>;
+};
+
+export enum Sorting {
+  ASC = 'ASC',
+  DESC = 'DESC',
+  DEFAULT = 'DEFAULT',
+}

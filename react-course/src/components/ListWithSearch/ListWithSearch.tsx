@@ -9,6 +9,7 @@ import Spinner from 'components/Spinner';
 import { Character } from 'types/types';
 
 import './ListWithSearch.scss';
+import Pagination from 'components/Pagination';
 
 const api = new Api();
 
@@ -67,6 +68,7 @@ const ListWithSearch = () => {
   return (
     <div className="list-with-search">
       <SearchBar onSubmit={onSubmit} value={searchValue} disabled={status.loading} />
+      <Pagination />
       {errorMessage}
       {spinner}
       {!status.error && !status.loading ? content : null}
