@@ -5,12 +5,6 @@ export type ItemListProps = {
   onClick: (character: Character) => void;
 };
 
-export type SearchBarProps = {
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-  value: string;
-  disabled: boolean;
-};
-
 // Form
 
 export enum InputName {

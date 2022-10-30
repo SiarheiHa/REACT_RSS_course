@@ -1,5 +1,4 @@
 import { Character, Endpoint, ResponseModel, Sorting } from 'types/types';
-import { runInThisContext } from 'vm';
 import { apiBase, apiKey } from './constants';
 
 export default class Api {

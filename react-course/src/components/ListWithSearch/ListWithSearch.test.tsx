@@ -3,6 +3,7 @@ import React from 'react';
 import userEvent from '@testing-library/user-event';
 import ListWithSearch from './ListWithSearch';
 import { testResponse } from '../../mocks/testData';
+import { CharactersState } from 'context';
 
 class LocalStorageMock {
   store: Record<string, string> = {};
@@ -48,17 +49,29 @@ describe('ListWithSearch', () => {
     expect(screen.getByRole('searchbox')).toBeInTheDocument();
   });
   it('LocalStorage saves value', () => {
-    const { unmount } = render(<ListWithSearch />);
+    const { unmount } = render(
+      <CharactersState>
+        <ListWithSearch />
+      </CharactersState>
+    );
     const input = screen.getByRole('searchbox');
     userEvent.type(input, 'frodo');
     userEvent.keyboard('{Enter}');
     unmount();
-    render(<ListWithSearch />);
+    render(
+      <CharactersState>
+        <ListWithSearch />
+      </CharactersState>
+    );
     expect(screen.getByDisplayValue(/frodo/)).toBeInTheDocument();
   });
 
   it('spinner renders first, then context renders and spinner removs', async () => {
-    render(<ListWithSearch />);
+    render(
+      <CharactersState>
+        <ListWithSearch />
+      </CharactersState>
+    );
     const spinner = screen.getByTestId('spinner');
     expect(spinner).toBeInTheDocument();
     expect(await screen.findByText(testResponse.docs[0].name)).toBeInTheDocument();
@@ -66,7 +79,11 @@ describe('ListWithSearch', () => {
   });
 
   it('if item is not found renders message about it', async () => {
-    render(<ListWithSearch />);
+    render(
+      <CharactersState>
+        <ListWithSearch />
+      </CharactersState>
+    );
     const input = screen.getByRole('searchbox');
     userEvent.type(input, 'fakeTestName');
     userEvent.keyboard('{Enter}');
@@ -74,7 +91,11 @@ describe('ListWithSearch', () => {
   });
 
   it('error message renders on server error', async () => {
-    render(<ListWithSearch />);
+    render(
+      <CharactersState>
+        <ListWithSearch />
+      </CharactersState>
+    );
     const input = screen.getByRole('searchbox');
     userEvent.type(input, 'invalidPath');
     userEvent.keyboard('{Enter}');
@@ -82,7 +103,11 @@ describe('ListWithSearch', () => {
   });
 
   it('modal works', async () => {
-    render(<ListWithSearch />);
+    render(
+      <CharactersState>
+        <ListWithSearch />
+      </CharactersState>
+    );
     expect(await screen.findByText(testResponse.docs[0].name)).toBeInTheDocument();
     userEvent.click(screen.getByText(testResponse.docs[0].name));
     const modal = screen.getByTestId('modal-overlay');

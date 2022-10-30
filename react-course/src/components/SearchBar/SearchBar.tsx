@@ -1,6 +1,6 @@
 import { CharactersContext } from 'context/CharactersState';
 import React, { FormEvent, useContext } from 'react';
-import { CharactersActionType, SearchBarProps } from 'types/types';
+import { CharactersActionType } from 'types/types';
 import './SearchBar.scss';
 
 const SearchBar = ({ disabled }: { disabled: boolean }) => {
