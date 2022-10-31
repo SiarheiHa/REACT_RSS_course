@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import React from 'react';
 import Card from './Card';
 
-const testCart = {
+const testCard = {
   name: 'TestName',
   surname: 'TestSurName',
   birthday: '2022-10-06',
@@ -13,7 +13,7 @@ const testCart = {
 
 describe('Card', () => {
   it('Card renders', () => {
-    render(<Card card={testCart} />);
+    render(<Card card={testCard} />);
     expect(screen.getByText('TestName')).toBeInTheDocument();
     expect(screen.getByText('TestSurName')).toBeInTheDocument();
     expect(screen.getByText('2022-10-06')).toBeInTheDocument();

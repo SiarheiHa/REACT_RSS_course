@@ -1,9 +1,10 @@
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 import userEvent from '@testing-library/user-event';
-import ListWithSearch from './ListWithSearch';
 import { testResponse } from '../../mocks/testData';
 import { CharactersState } from 'context';
+import App from 'App';
+import { BrowserRouter } from 'react-router-dom';
 
 class LocalStorageMock {
   store: Record<string, string> = {};
@@ -44,32 +45,54 @@ describe('ListWithSearch', () => {
   beforeEach(() => {
     localStorage.clear();
   });
+
   it('ListWithSearch renders', () => {
-    render(<ListWithSearch />);
+    render(
+      <BrowserRouter>
+        <CharactersState>
+          <App />
+        </CharactersState>
+      </BrowserRouter>
+    );
     expect(screen.getByRole('searchbox')).toBeInTheDocument();
   });
+
   it('LocalStorage saves value', () => {
     const { unmount } = render(
       <CharactersState>
-        <ListWithSearch />
+        <BrowserRouter>
+          <CharactersState>
+            <App />
+          </CharactersState>
+        </BrowserRouter>
       </CharactersState>
     );
     const input = screen.getByRole('searchbox');
     userEvent.type(input, 'frodo');
     userEvent.keyboard('{Enter}');
+    expect(screen.getByDisplayValue(/frodo/)).toBeInTheDocument();
     unmount();
     render(
       <CharactersState>
-        <ListWithSearch />
+        <BrowserRouter>
+          <CharactersState>
+            <App />
+          </CharactersState>
+        </BrowserRouter>
       </CharactersState>
     );
-    expect(screen.getByDisplayValue(/frodo/)).toBeInTheDocument();
+    expect(screen.getByRole('searchbox')).toBeInTheDocument();
+    expect(localStorage.getItem('search')).toBe('frodo');
   });
 
   it('spinner renders first, then context renders and spinner removs', async () => {
     render(
       <CharactersState>
-        <ListWithSearch />
+        <BrowserRouter>
+          <CharactersState>
+            <App />
+          </CharactersState>
+        </BrowserRouter>
       </CharactersState>
     );
     const spinner = screen.getByTestId('spinner');
@@ -81,7 +104,11 @@ describe('ListWithSearch', () => {
   it('if item is not found renders message about it', async () => {
     render(
       <CharactersState>
-        <ListWithSearch />
+        <BrowserRouter>
+          <CharactersState>
+            <App />
+          </CharactersState>
+        </BrowserRouter>
       </CharactersState>
     );
     const input = screen.getByRole('searchbox');
@@ -93,34 +120,16 @@ describe('ListWithSearch', () => {
   it('error message renders on server error', async () => {
     render(
       <CharactersState>
-        <ListWithSearch />
+        <BrowserRouter>
+          <CharactersState>
+            <App />
+          </CharactersState>
+        </BrowserRouter>
       </CharactersState>
     );
     const input = screen.getByRole('searchbox');
     userEvent.type(input, 'invalidPath');
     userEvent.keyboard('{Enter}');
     expect(await screen.findByText('Oops! Something went wrong...')).toBeInTheDocument();
-  });
-
-  it('modal works', async () => {
-    render(
-      <CharactersState>
-        <ListWithSearch />
-      </CharactersState>
-    );
-    expect(await screen.findByText(testResponse.docs[0].name)).toBeInTheDocument();
-    userEvent.click(screen.getByText(testResponse.docs[0].name));
-    const modal = screen.getByTestId('modal-overlay');
-    expect(modal).toBeInTheDocument();
-    userEvent.click(modal);
-    expect(modal).not.toBeInTheDocument();
-    expect(screen.getByText(testResponse.docs[1].name)).toBeInTheDocument();
-    userEvent.click(screen.getByText(testResponse.docs[1].name));
-    expect(screen.getAllByText(testResponse.docs[1].name).length).toEqual(2);
-    const modalBtn = screen.getByTestId('btn modal-close-btn');
-    expect(modalBtn).toBeInTheDocument();
-    expect(screen.queryByTestId('modal-wrapper')).toBeInTheDocument();
-    userEvent.click(modalBtn);
-    expect(screen.queryByTestId('modal-wrapper')).not.toBeInTheDocument();
   });
 });

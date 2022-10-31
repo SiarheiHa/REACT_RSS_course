@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
 import ItemList from './ItemList';
 
 const testItems = [
@@ -46,7 +47,11 @@ const testItems = [
 
 describe('ItemList', () => {
   it('item list renders', () => {
-    render(<ItemList items={testItems} onClick={jest.fn()} />);
+    render(
+      <BrowserRouter>
+        <ItemList items={testItems} />
+      </BrowserRouter>
+    );
     //expect testItems.length + 2 (library wrapper + ItemList wrapper)
     expect(screen.getAllByRole('generic').length).toEqual(testItems.length + 2);
   });
