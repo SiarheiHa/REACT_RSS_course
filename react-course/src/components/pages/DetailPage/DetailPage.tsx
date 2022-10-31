@@ -12,7 +12,6 @@ const DetailPage = () => {
   const navigate = useNavigate();
   useEffect(() => {
     if (index === -1) {
-      console.log('navigate');
       navigate('/');
     }
   }, [index, navigate]);

@@ -1,7 +1,6 @@
 import { FormAction, FormActionType, FormStateType } from 'types/types';
 
 export const formReducer = (state: FormStateType, action: FormAction) => {
-  console.log(action);
   switch (action.type) {
     case FormActionType.ADD_CARD:
       return {

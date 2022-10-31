@@ -30,6 +30,7 @@ function CharacterCard(props: {
           onClick(props.character);
         }
       }}
+      // data-testid="character"
     >
       <p className="character__title">{name}</p>
       <p className="character__race">{race}</p>

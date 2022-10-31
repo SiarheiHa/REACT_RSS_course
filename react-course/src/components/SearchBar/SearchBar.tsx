@@ -14,6 +14,8 @@ const SearchBar = ({ disabled }: { disabled: boolean }) => {
     if (e.target instanceof HTMLFormElement) {
       const formData = new FormData(e.target);
       const value = String(formData.get('search') || '');
+
+      localStorage.setItem('search', value);
       dispatch({
         type: CharactersActionType.SET_SEARCH,
         payload: value,

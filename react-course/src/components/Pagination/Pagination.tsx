@@ -25,7 +25,6 @@ const Pagination = () => {
 
   const onChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
-    console.log(name, 'value', value);
     switch (name) {
       case 'currentPage':
         dispatch({

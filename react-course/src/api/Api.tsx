@@ -26,7 +26,6 @@ export default class Api {
     sorting: string,
     searchValue: string
   ): Promise<ResponseModel> {
-    console.log('request');
     let queriString = `?limit=${limit}&page=${page}`;
     if (searchValue) {
       queriString += `&name=/${searchValue}/i`;

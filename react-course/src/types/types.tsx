@@ -1,10 +1,5 @@
 import React from 'react';
 
-export type ItemListProps = {
-  items: Character[];
-  onClick: (character: Character) => void;
-};
-
 // Form
 
 export enum InputName {
