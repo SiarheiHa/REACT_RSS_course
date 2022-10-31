@@ -11,6 +11,7 @@ export const charactersReducer = (state: CharactersStateType, action: Characters
     case CharactersActionType.SET_LIMIT:
       return {
         ...state,
+        currentPage: '1',
         limit: action.payload,
       };
     case CharactersActionType.SET_SORTING:
