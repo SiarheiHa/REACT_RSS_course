@@ -29,6 +29,12 @@ export const charactersReducer = (state: CharactersStateType, action: Characters
         ...state,
         characters: action.payload.docs,
         pages: String(action.payload.pages),
+        status: { loading: false, error: false },
+      };
+    case CharactersActionType.SET_STATUS:
+      return {
+        ...state,
+        status: action.payload,
       };
     default:
       return state;

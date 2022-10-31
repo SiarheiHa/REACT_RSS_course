@@ -102,6 +102,11 @@ export type FormContextType = {
 };
 
 //characters
+type LoadingStatus = {
+  loading: boolean;
+  error: boolean;
+};
+
 export type CharactersStateType = {
   characters: Character[];
   currentPage: string;
@@ -109,6 +114,7 @@ export type CharactersStateType = {
   pages: string;
   sorting: Sorting;
   searchValue: string;
+  status: LoadingStatus;
 };
 
 export enum CharactersActionType {
@@ -119,6 +125,7 @@ export enum CharactersActionType {
   //characters list
   SET_SEARCH = 'SET_SEARCH',
   SET_CHARACTERS = 'SET_CHARACTERS',
+  SET_STATUS = 'SET_STATUS',
 }
 
 export type CharactersActionModel = {
@@ -146,7 +153,18 @@ export interface SetCharacters extends CharactersActionModel {
   payload: ResponseModel;
 }
 
-export type CharactersAction = SetCurrentPage | SetLimit | SetSorting | SetSearch | SetCharacters;
+export interface SetStatus extends CharactersActionModel {
+  type: CharactersActionType.SET_STATUS;
+  payload: LoadingStatus;
+}
+
+export type CharactersAction =
+  | SetCurrentPage
+  | SetLimit
+  | SetSorting
+  | SetSearch
+  | SetCharacters
+  | SetStatus;
 
 export type CharactersContextType = {
   state: CharactersStateType;

@@ -9,6 +9,10 @@ const initialCharactersState: CharactersStateType = {
   pages: '',
   sorting: Sorting.DEFAULT,
   searchValue: localStorage.getItem('search') || '',
+  status: {
+    loading: false,
+    error: false,
+  },
 };
 
 const initialCharactersContext: CharactersContextType = {
