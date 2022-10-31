@@ -3,6 +3,8 @@ import { CharactersContext } from 'context/CharactersState';
 import React, { useContext, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
+import './DetailPage.scss';
+
 const DetailPage = () => {
   const { id } = useParams();
   const {
@@ -23,7 +25,9 @@ const DetailPage = () => {
       {characters[index] && (
         <div className="detail-page">
           <p>current position {position}</p>
-          <Link to="/">BACK</Link>
+          <Link className="link" to="/">
+            BACK
+          </Link>
           <CharacterCard character={characters[index]} detail />
         </div>
       )}
