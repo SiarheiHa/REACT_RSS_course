@@ -20,6 +20,16 @@ export const errorMessages: Record<InputName, string> = {
   [InputName.file]: 'please choose a file',
 };
 
+export const emptyInputValues = {
+  [InputName.name]: '',
+  [InputName.surname]: '',
+  [InputName.birthday]: '',
+  [InputName.location]: '',
+  [InputName.checkbox]: false,
+  [InputName.switcher]: false,
+  [InputName.file]: null,
+};
+
 export const switcherFieldName = 'gender';
 export const checkboxText = 'I agree to create a card';
 export const countryList = [

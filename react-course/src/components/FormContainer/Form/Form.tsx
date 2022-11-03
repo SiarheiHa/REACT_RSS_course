@@ -3,7 +3,7 @@ import React, { useContext, useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { FormActionType, FormData, InputName, SwitcherValue } from 'types/types';
 import Input from '../Input';
-import { errorMessages, inputNames, switcherFieldName } from './constants';
+import { emptyInputValues, errorMessages, inputNames, switcherFieldName } from './constants';
 
 import './Form.scss';
 
@@ -19,9 +19,8 @@ const Form = () => {
     reset,
     formState: { errors, isDirty, isSubmitSuccessful },
     getValues,
-    setValue,
     trigger,
-  } = useForm<FormData>();
+  } = useForm<FormData>({ defaultValues: inputsValues || {} });
 
   //сохраняет в контекст данные инпутов при анмаунте
   useEffect(() => {
@@ -32,15 +31,6 @@ const Form = () => {
       });
     };
   }, [dispatch, getValues]);
-
-  // устанавливает значения в инпуты
-  useEffect(() => {
-    if (inputsValues) {
-      inputNames.forEach((key) => {
-        setValue(key, inputsValues[key]);
-      });
-    }
-  }, [inputsValues, setValue]);
 
   // сохранение флага наличия ошибок в контекст
   useEffect(() => {
@@ -63,7 +53,7 @@ const Form = () => {
   // сброс формы при успешном сабмите
   useEffect(() => {
     if (isSubmitSuccessful) {
-      reset();
+      reset(emptyInputValues);
     }
   }, [isSubmitSuccessful, reset]);
 
