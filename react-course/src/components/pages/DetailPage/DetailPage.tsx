@@ -1,3 +1,4 @@
+import Breadcrumbs from 'components/Breadcrumbs';
 import CharacterCard from 'components/CharacterCard';
 import { CharactersContext } from 'context/CharactersState';
 import React, { useContext, useEffect } from 'react';
@@ -8,7 +9,7 @@ import './DetailPage.scss';
 const DetailPage = () => {
   const { id } = useParams();
   const {
-    state: { characters, currentPage, limit },
+    state: { characters },
   } = useContext(CharactersContext);
   const index = characters.findIndex(({ _id }) => _id === id);
   const navigate = useNavigate();
@@ -18,16 +19,16 @@ const DetailPage = () => {
     }
   }, [index, navigate]);
 
-  const position = (Number(currentPage) - 1) * Number(limit) + index + 1;
+  const crumbs = [
+    { name: 'characters', path: '/' },
+    { name: characters[index].name, path: '' },
+  ];
 
   return (
     <>
       {characters[index] && (
         <div className="detail-page">
-          <p>current position {position}</p>
-          <Link className="link" to="/">
-            BACK
-          </Link>
+          <Breadcrumbs crumbs={crumbs} />
           <CharacterCard character={characters[index]} detail />
         </div>
       )}
