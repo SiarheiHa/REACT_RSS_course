@@ -1,6 +1,6 @@
 import Header from 'components/Header';
 import { AboutPage, DetailPage, FormPage, MainPage, NotFoundPage } from 'components/pages';
-import { FormState } from './context';
+// import { FormState } from './context';
 import React, { useContext, useEffect } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { ResponseModel, CharactersActionType } from 'types/types';
@@ -43,7 +43,8 @@ function App() {
   }, [currentPage, limit, sorting, searchValue, dispatch]);
 
   return (
-    <FormState>
+    // <FormState>
+    <>
       <Header />
       <main>
         <Routes>
@@ -55,7 +56,8 @@ function App() {
           <Route path="*" element={<Navigate to={'/404'} replace />} />
         </Routes>
       </main>
-    </FormState>
+    </>
+    // </FormState>
   );
 }
 
