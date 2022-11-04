@@ -1,17 +1,17 @@
-import { FormContext } from 'context/FormState';
-import React, { useContext } from 'react';
+import React from 'react';
+import { useAppSelector } from 'store';
 import CardList from './CardList';
 import Form from './Form';
 
 import './FormContainer.scss';
 
 const FormContainer = () => {
-  const { state } = useContext(FormContext);
+  const cards = useAppSelector((state) => state.form.cards);
 
   return (
     <div data-testid="form-container">
       <Form />
-      <CardList cards={state.cards} />
+      <CardList cards={cards} />
     </div>
   );
 };

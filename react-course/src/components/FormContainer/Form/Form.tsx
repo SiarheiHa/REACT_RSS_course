@@ -1,6 +1,8 @@
-import { FormContext } from 'context/FormState';
+// import { FormContext } from 'context/FormState';
 import React, { useContext, useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useAppDispatch, useAppSelector } from 'store';
+import { addCard, saveInputsValues, setErrors } from 'store/formSlice';
 import { FormActionType, FormData, InputName, SwitcherValue } from 'types/types';
 import Input from '../Input';
 import { emptyInputValues, errorMessages, inputNames, switcherFieldName } from './constants';
@@ -8,10 +10,8 @@ import { emptyInputValues, errorMessages, inputNames, switcherFieldName } from '
 import './Form.scss';
 
 const Form = () => {
-  const {
-    state: { inputsValues, hasFormErrors },
-    dispatch,
-  } = useContext(FormContext);
+  const { inputsValues, hasFormErrors } = useAppSelector((state) => state.form);
+  const dispatch = useAppDispatch();
 
   const {
     register,
@@ -25,10 +25,7 @@ const Form = () => {
   //сохраняет в контекст данные инпутов при анмаунте
   useEffect(() => {
     return () => {
-      dispatch({
-        type: FormActionType.SAVE_INPUT_VALUES,
-        payload: getValues(),
-      });
+      dispatch(saveInputsValues({ ...getValues(), file: null }));
     };
   }, [dispatch, getValues]);
 
@@ -36,9 +33,7 @@ const Form = () => {
   useEffect(() => {
     return () => {
       if (Object.keys(errors).length) {
-        dispatch({
-          type: FormActionType.SAVE_ERRORS,
-        });
+        dispatch(setErrors());
       }
     };
   }, [dispatch, errors]);
@@ -69,10 +64,7 @@ const Form = () => {
       return acc;
     }, {});
 
-    dispatch({
-      type: FormActionType.ADD_CARD,
-      payload: formData,
-    });
+    dispatch(addCard(formData));
   };
 
   const onChange = () => {
