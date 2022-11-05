@@ -10,11 +10,11 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <CharactersState>
-        <Provider store={store}>
-          <App />
-        </Provider>
-      </CharactersState>
+      {/* <CharactersState> */}
+      <Provider store={store}>
+        <App />
+      </Provider>
+      {/* </CharactersState> */}
     </BrowserRouter>
   </React.StrictMode>
 );

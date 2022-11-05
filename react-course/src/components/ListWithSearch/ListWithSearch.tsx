@@ -4,12 +4,15 @@ import SearchBar from 'components/SearchBar';
 import Spinner from 'components/Spinner';
 import './ListWithSearch.scss';
 import Pagination from 'components/Pagination';
-import { CharactersContext } from 'context/CharactersState';
+// import { CharactersContext } from 'context/CharactersState';
+import { useAppSelector } from 'store';
 
 const ListWithSearch = () => {
-  const {
-    state: { characters, status },
-  } = useContext(CharactersContext);
+  const { characters, status } = useAppSelector((state) => state.characters);
+
+  // const {
+  //   state: { characters, status },
+  // } = useContext(CharactersContext);
 
   const errorMessage = status.error ? <p>Oops! Something went wrong...</p> : null;
   const spinner = status.loading ? <Spinner /> : null;

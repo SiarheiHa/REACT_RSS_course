@@ -4,43 +4,51 @@ import { AboutPage, DetailPage, FormPage, MainPage, NotFoundPage } from 'compone
 import React, { useContext, useEffect } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { ResponseModel, CharactersActionType } from 'types/types';
-import { CharactersContext } from 'context/CharactersState';
+// import { CharactersContext } from 'context/CharactersState';
 import Api from 'api';
 import './App.scss';
+import { useAppDispatch } from 'store';
+import { fetchCharacters } from 'store/charactersSlice';
 
 const api = new Api();
 
 function App() {
-  const {
-    state: { currentPage, limit, sorting, searchValue },
-    dispatch,
-  } = useContext(CharactersContext);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const onCharactersLoaded = (data: ResponseModel) => {
-      dispatch({
-        type: CharactersActionType.SET_CHARACTERS,
-        payload: data,
-      });
-    };
+    dispatch(fetchCharacters());
+  });
 
-    const onError = () => {
-      dispatch({
-        type: CharactersActionType.SET_STATUS,
-        payload: { loading: false, error: true },
-      });
-    };
+  // const {
+  //   state: { currentPage, limit, sorting, searchValue },
+  //   dispatch,
+  // } = useContext(CharactersContext);
 
-    api
-      .getPaginatedData(currentPage, limit, sorting, searchValue)
-      .then(onCharactersLoaded)
-      .catch(onError);
+  // useEffect(() => {
+  //   const onCharactersLoaded = (data: ResponseModel) => {
+  //     dispatch({
+  //       type: CharactersActionType.SET_CHARACTERS,
+  //       payload: data,
+  //     });
+  //   };
 
-    dispatch({
-      type: CharactersActionType.SET_STATUS,
-      payload: { loading: true, error: false },
-    });
-  }, [currentPage, limit, sorting, searchValue, dispatch]);
+  //   const onError = () => {
+  //     dispatch({
+  //       type: CharactersActionType.SET_STATUS,
+  //       payload: { loading: false, error: true },
+  //     });
+  //   };
+
+  //   api
+  //     .getPaginatedData(currentPage, limit, sorting, searchValue)
+  //     .then(onCharactersLoaded)
+  //     .catch(onError);
+
+  //   dispatch({
+  //     type: CharactersActionType.SET_STATUS,
+  //     payload: { loading: true, error: false },
+  //   });
+  // }, [currentPage, limit, sorting, searchValue, dispatch]);
 
   return (
     // <FormState>

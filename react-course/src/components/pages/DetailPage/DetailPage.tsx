@@ -1,16 +1,16 @@
 import Breadcrumbs from 'components/Breadcrumbs';
 import CharacterCard from 'components/CharacterCard';
-import { CharactersContext } from 'context/CharactersState';
+// import { CharactersContext } from 'context/CharactersState';
 import React, { useContext, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useAppSelector } from 'store';
 
 import './DetailPage.scss';
 
 const DetailPage = () => {
   const { id } = useParams();
-  const {
-    state: { characters },
-  } = useContext(CharactersContext);
+  const { characters } = useAppSelector((state) => state.characters);
+
   const index = characters.findIndex(({ _id }) => _id === id);
   const navigate = useNavigate();
   useEffect(() => {

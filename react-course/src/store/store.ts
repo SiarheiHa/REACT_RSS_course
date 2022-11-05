@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import formSlice from './formSlice';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import charactersSlice from './charactersSlice';
 
 export const store = configureStore({
   reducer: {
     form: formSlice,
+    characters: charactersSlice,
   },
 });
 
