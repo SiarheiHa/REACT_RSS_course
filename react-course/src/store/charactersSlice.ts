@@ -1,15 +1,22 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { CharactersStateType, ResponseModel, Sorting } from 'types/types';
+import { CharactersStateType, ResponseModel, SetCurrentPage, Sorting } from 'types/types';
 import Api from 'api';
 
 const api = new Api();
 
-export const fetchCharacters = createAsyncThunk<ResponseModel>(
+type Request = {
+  page: string;
+  limit: string;
+  sorting: string;
+  searchValue: string;
+};
+
+export const fetchCharacters = createAsyncThunk<ResponseModel, Request>(
   'characters/fetchCharacters',
-  async function () {
-    const data = await api.getPaginatedData('2', '10', 'asc', '');
-    // const data = await api.getPaginatedData(currentPage, limit, sorting, searchValue);
+  async function ({ page, limit, sorting, searchValue }: Request) {
+    // const data = await api.getPaginatedData('2', '10', 'asc', '');
+    const data = await api.getPaginatedData(page, limit, sorting, searchValue);
     return data;
   }
 );
@@ -27,10 +34,25 @@ const initialCharactersState: CharactersStateType = {
   },
 };
 
-const chararactersSlice = createSlice({
+const charactersSlice = createSlice({
   name: 'characters',
   initialState: initialCharactersState,
-  reducers: {},
+  reducers: {
+    setCurrentPage(state, action: PayloadAction<string>) {
+      state.currentPage = action.payload;
+    },
+    setLimit(state, action: PayloadAction<string>) {
+      state.currentPage = '1';
+      state.limit = action.payload;
+    },
+    setSorting(state, action: PayloadAction<Sorting>) {
+      state.sorting = action.payload;
+    },
+    setSearch(state, action: PayloadAction<string>) {
+      state.currentPage = '1';
+      state.searchValue = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchCharacters.pending, (state) => {
       state.status.loading = true;
@@ -43,11 +65,7 @@ const chararactersSlice = createSlice({
       state.characters = action.payload.docs;
     });
   },
-  // {
-  // [fetchCharacters.pending]: (state, action) => {},
-  // [fetchCharacters.fulfilled]: (state, action) => {},
-  // [fetchCharacters.rejected]: (state, action) => {},
-  // },
 });
 
-export default chararactersSlice.reducer;
+export const { setCurrentPage, setLimit, setSearch, setSorting } = charactersSlice.actions;
+export default charactersSlice.reducer;

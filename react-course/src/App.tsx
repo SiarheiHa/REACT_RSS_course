@@ -7,17 +7,23 @@ import { ResponseModel, CharactersActionType } from 'types/types';
 // import { CharactersContext } from 'context/CharactersState';
 import Api from 'api';
 import './App.scss';
-import { useAppDispatch } from 'store';
+import { useAppDispatch, useAppSelector } from 'store';
 import { fetchCharacters } from 'store/charactersSlice';
 
 const api = new Api();
 
 function App() {
   const dispatch = useAppDispatch();
+  const {
+    currentPage: page,
+    limit,
+    sorting,
+    searchValue,
+  } = useAppSelector((state) => state.characters);
 
   useEffect(() => {
-    dispatch(fetchCharacters());
-  });
+    dispatch(fetchCharacters({ page, limit, sorting, searchValue }));
+  }, [page, limit, sorting, searchValue, dispatch]);
 
   // const {
   //   state: { currentPage, limit, sorting, searchValue },

@@ -1,15 +1,20 @@
-import { CharactersContext } from 'context/CharactersState';
+// import { CharactersContext } from 'context/CharactersState';
+import { useAppDispatch, useAppSelector } from 'store';
 import React, { useContext } from 'react';
 import { CharactersActionType, Sorting } from 'types/types';
 import { paginationLimits, sortings } from './constants';
 
 import './Pagination.scss';
+import { setCurrentPage, setLimit, setSorting } from 'store/charactersSlice';
 
 const Pagination = () => {
-  const {
-    state: { currentPage, limit, pages, sorting },
-    dispatch,
-  } = useContext(CharactersContext);
+  const { currentPage, limit, pages, sorting } = useAppSelector((state) => state.characters);
+  const dispatch = useAppDispatch();
+
+  // const {
+  //   state: { currentPage, limit, pages, sorting },
+  //   dispatch,
+  // } = useContext(CharactersContext);
 
   const OptionsForPages = (count: number) => {
     const options = [];
@@ -27,38 +32,45 @@ const Pagination = () => {
     const { name, value } = e.target;
     switch (name) {
       case 'currentPage':
-        dispatch({
-          type: CharactersActionType.SET_CURRENT_PAGE,
-          payload: value,
-        });
+        dispatch(setCurrentPage(value));
+        // dispatch({
+        //   type: CharactersActionType.SET_CURRENT_PAGE,
+        //   payload: value,
+        // });
         break;
       case 'limit':
-        dispatch({
-          type: CharactersActionType.SET_LIMIT,
-          payload: value,
-        });
+        dispatch(setLimit(value));
+
+        // dispatch({
+        //   type: CharactersActionType.SET_LIMIT,
+        //   payload: value,
+        // });
         break;
       case 'sorting':
-        dispatch({
-          type: CharactersActionType.SET_SORTING,
-          payload: value as Sorting,
-        });
+        dispatch(setSorting(value as Sorting));
+
+      // dispatch({
+      //   type: CharactersActionType.SET_SORTING,
+      //   payload: value as Sorting,
+      // });
     }
   };
 
   const onClick = (variant: 'increase' | 'decrease') => {
     switch (variant) {
       case 'increase':
-        dispatch({
-          type: CharactersActionType.SET_CURRENT_PAGE,
-          payload: String(Number(currentPage) + 1),
-        });
+        dispatch(setCurrentPage(String(Number(currentPage) + 1)));
+        // dispatch({
+        //   type: CharactersActionType.SET_CURRENT_PAGE,
+        //   payload: String(Number(currentPage) + 1),
+        // });
         break;
       default:
-        dispatch({
-          type: CharactersActionType.SET_CURRENT_PAGE,
-          payload: String(Number(currentPage) - 1),
-        });
+        dispatch(setCurrentPage(String(Number(currentPage) - 1)));
+      // dispatch({
+      //   type: CharactersActionType.SET_CURRENT_PAGE,
+      //   payload: String(Number(currentPage) - 1),
+      // });
     }
   };
 
