@@ -14,10 +14,17 @@ type Request = {
 
 export const fetchCharacters = createAsyncThunk<ResponseModel, Request>(
   'characters/fetchCharacters',
-  async function ({ page, limit, sorting, searchValue }: Request) {
+  async function ({ page, limit, sorting, searchValue }: Request, { rejectWithValue }) {
     // const data = await api.getPaginatedData('2', '10', 'asc', '');
-    const data = await api.getPaginatedData(page, limit, sorting, searchValue);
-    return data;
+    try {
+      const data = await api.getPaginatedData(page, limit, sorting, searchValue);
+      return data;
+    } catch (error) {
+      if (error instanceof Error) {
+        return rejectWithValue(error.message);
+      }
+      return rejectWithValue('error');
+    }
   }
 );
 
@@ -63,6 +70,10 @@ const charactersSlice = createSlice({
       state.status.error = false;
       state.pages = String(action.payload.pages);
       state.characters = action.payload.docs;
+    });
+    builder.addCase(fetchCharacters.rejected, (state) => {
+      state.status.loading = false;
+      state.status.error = true;
     });
   },
 });
