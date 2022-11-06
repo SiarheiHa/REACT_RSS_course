@@ -1,7 +1,7 @@
 // import { CharactersContext } from 'context/CharactersState';
 import { useAppDispatch, useAppSelector } from 'store';
-import React, { useContext } from 'react';
-import { CharactersActionType, Sorting } from 'types/types';
+import React from 'react';
+import { Sorting } from 'types/types';
 import { paginationLimits, sortings } from './constants';
 
 import './Pagination.scss';
@@ -10,11 +10,6 @@ import { setCurrentPage, setLimit, setSorting } from 'store/charactersSlice';
 const Pagination = () => {
   const { currentPage, limit, pages, sorting } = useAppSelector((state) => state.characters);
   const dispatch = useAppDispatch();
-
-  // const {
-  //   state: { currentPage, limit, pages, sorting },
-  //   dispatch,
-  // } = useContext(CharactersContext);
 
   const OptionsForPages = (count: number) => {
     const options = [];
@@ -33,26 +28,12 @@ const Pagination = () => {
     switch (name) {
       case 'currentPage':
         dispatch(setCurrentPage(value));
-        // dispatch({
-        //   type: CharactersActionType.SET_CURRENT_PAGE,
-        //   payload: value,
-        // });
         break;
       case 'limit':
         dispatch(setLimit(value));
-
-        // dispatch({
-        //   type: CharactersActionType.SET_LIMIT,
-        //   payload: value,
-        // });
         break;
       case 'sorting':
         dispatch(setSorting(value as Sorting));
-
-      // dispatch({
-      //   type: CharactersActionType.SET_SORTING,
-      //   payload: value as Sorting,
-      // });
     }
   };
 
@@ -60,17 +41,9 @@ const Pagination = () => {
     switch (variant) {
       case 'increase':
         dispatch(setCurrentPage(String(Number(currentPage) + 1)));
-        // dispatch({
-        //   type: CharactersActionType.SET_CURRENT_PAGE,
-        //   payload: String(Number(currentPage) + 1),
-        // });
         break;
       default:
         dispatch(setCurrentPage(String(Number(currentPage) - 1)));
-      // dispatch({
-      //   type: CharactersActionType.SET_CURRENT_PAGE,
-      //   payload: String(Number(currentPage) - 1),
-      // });
     }
   };
 

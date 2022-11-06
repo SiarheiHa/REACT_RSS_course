@@ -2,9 +2,11 @@ import { render, screen } from '@testing-library/react';
 import React from 'react';
 import userEvent from '@testing-library/user-event';
 import { testResponse } from '../../mocks/testData';
-import { CharactersState } from 'context';
+// import { CharactersState } from 'context';
 import App from 'App';
 import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { store } from 'store';
 
 class LocalStorageMock {
   store: Record<string, string> = {};
@@ -49,9 +51,9 @@ describe('ListWithSearch', () => {
   it('ListWithSearch renders', () => {
     render(
       <BrowserRouter>
-        <CharactersState>
+        <Provider store={store}>
           <App />
-        </CharactersState>
+        </Provider>
       </BrowserRouter>
     );
     expect(screen.getByRole('searchbox')).toBeInTheDocument();
@@ -59,13 +61,11 @@ describe('ListWithSearch', () => {
 
   it('LocalStorage saves value', () => {
     const { unmount } = render(
-      <CharactersState>
-        <BrowserRouter>
-          <CharactersState>
-            <App />
-          </CharactersState>
-        </BrowserRouter>
-      </CharactersState>
+      <BrowserRouter>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </BrowserRouter>
     );
     const input = screen.getByRole('searchbox');
     userEvent.type(input, 'frodo');
@@ -73,13 +73,11 @@ describe('ListWithSearch', () => {
     expect(screen.getByDisplayValue(/frodo/)).toBeInTheDocument();
     unmount();
     render(
-      <CharactersState>
-        <BrowserRouter>
-          <CharactersState>
-            <App />
-          </CharactersState>
-        </BrowserRouter>
-      </CharactersState>
+      <BrowserRouter>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </BrowserRouter>
     );
     expect(screen.getByRole('searchbox')).toBeInTheDocument();
     expect(localStorage.getItem('search')).toBe('frodo');
@@ -87,13 +85,11 @@ describe('ListWithSearch', () => {
 
   it('spinner renders first, then context renders and spinner removs', async () => {
     render(
-      <CharactersState>
-        <BrowserRouter>
-          <CharactersState>
-            <App />
-          </CharactersState>
-        </BrowserRouter>
-      </CharactersState>
+      <BrowserRouter>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </BrowserRouter>
     );
     const spinner = screen.getByTestId('spinner');
     expect(spinner).toBeInTheDocument();
@@ -103,13 +99,11 @@ describe('ListWithSearch', () => {
 
   it('if item is not found renders message about it', async () => {
     render(
-      <CharactersState>
-        <BrowserRouter>
-          <CharactersState>
-            <App />
-          </CharactersState>
-        </BrowserRouter>
-      </CharactersState>
+      <BrowserRouter>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </BrowserRouter>
     );
     const input = screen.getByRole('searchbox');
     userEvent.type(input, 'fakeTestName');
@@ -119,13 +113,9 @@ describe('ListWithSearch', () => {
 
   it('error message renders on server error', async () => {
     render(
-      <CharactersState>
-        <BrowserRouter>
-          <CharactersState>
-            <App />
-          </CharactersState>
-        </BrowserRouter>
-      </CharactersState>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     );
     const input = screen.getByRole('searchbox');
     userEvent.type(input, 'invalidPath');

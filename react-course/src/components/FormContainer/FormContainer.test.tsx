@@ -1,7 +1,9 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { FormState } from 'context';
+// import { FormState } from 'context';
 import React from 'react';
+import { Provider } from 'react-redux';
+import { store } from 'store';
 import FormContainer from './FormContainer';
 
 describe('FormContainer', () => {
@@ -13,9 +15,9 @@ describe('FormContainer', () => {
   it('The card is rendered after submitting the correct form', async () => {
     global.URL.createObjectURL = jest.fn();
     render(
-      <FormState>
+      <Provider store={store}>
         <FormContainer />
-      </FormState>
+      </Provider>
     );
 
     const nameInput = screen.getByLabelText('name');

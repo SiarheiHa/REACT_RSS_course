@@ -1,4 +1,4 @@
-import { Character, Endpoint, ResponseModel, Sorting } from 'types/types';
+import { Endpoint, ResponseModel, Sorting } from 'types/types';
 import { apiBase, apiKey } from './constants';
 
 export default class Api {
@@ -13,11 +13,6 @@ export default class Api {
       throw new Error(`Could not fetch ${url}, received ${res.status}`);
     }
     return await res.json();
-  }
-
-  async getCharacters(value: string): Promise<Character[]> {
-    const data = await this.getResource(Endpoint.character + `?name=/${value}/i`);
-    return data.docs;
   }
 
   getPaginatedData(

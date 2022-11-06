@@ -1,8 +1,7 @@
+import React, { useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import Breadcrumbs from 'components/Breadcrumbs';
 import CharacterCard from 'components/CharacterCard';
-// import { CharactersContext } from 'context/CharactersState';
-import React, { useContext, useEffect } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useAppSelector } from 'store';
 
 import './DetailPage.scss';

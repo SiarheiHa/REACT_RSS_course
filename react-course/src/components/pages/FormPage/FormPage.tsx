@@ -1,4 +1,4 @@
-import FormContainer from '../../FormContainer';
+import FormContainer from 'components/FormContainer';
 import React from 'react';
 
 const FormPage = () => {

@@ -1,18 +1,11 @@
-// import { CharactersContext } from 'context/CharactersState';
-import React, { FormEvent, useContext } from 'react';
+import React, { FormEvent } from 'react';
 import { useAppDispatch, useAppSelector } from 'store';
 import { setSearch } from 'store/charactersSlice';
-// import { CharactersActionType } from 'types/types';
 import './SearchBar.scss';
 
 const SearchBar = ({ disabled }: { disabled: boolean }) => {
   const searchValue = useAppSelector((state) => state.characters.searchValue);
   const dispatch = useAppDispatch();
-
-  // const {
-  //   state: { searchValue },
-  //   dispatch,
-  // } = useContext(CharactersContext);
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -22,10 +15,6 @@ const SearchBar = ({ disabled }: { disabled: boolean }) => {
 
       localStorage.setItem('search', value);
       dispatch(setSearch(value));
-      // dispatch({
-      //   type: CharactersActionType.SET_SEARCH,
-      //   payload: value,
-      // });
     }
   };
 

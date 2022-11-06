@@ -1,18 +1,13 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import ItemList from 'components/ItemList';
 import SearchBar from 'components/SearchBar';
 import Spinner from 'components/Spinner';
-import './ListWithSearch.scss';
 import Pagination from 'components/Pagination';
-// import { CharactersContext } from 'context/CharactersState';
 import { useAppSelector } from 'store';
+import './ListWithSearch.scss';
 
 const ListWithSearch = () => {
   const { characters, status } = useAppSelector((state) => state.characters);
-
-  // const {
-  //   state: { characters, status },
-  // } = useContext(CharactersContext);
 
   const errorMessage = status.error ? <p>Oops! Something went wrong...</p> : null;
   const spinner = status.loading ? <Spinner /> : null;

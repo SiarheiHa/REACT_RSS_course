@@ -1,9 +1,9 @@
 // import { FormContext } from 'context/FormState';
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from 'store';
 import { addCard, saveInputsValues, setErrors } from 'store/formSlice';
-import { FormActionType, FormData, InputName, SwitcherValue } from 'types/types';
+import { FormData, InputName, SwitcherValue } from 'types/types';
 import Input from '../Input';
 import { emptyInputValues, errorMessages, inputNames, switcherFieldName } from './constants';
 
