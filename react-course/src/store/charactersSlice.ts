@@ -2,22 +2,16 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { CharactersStateType, ResponseModel, Sorting } from 'types/types';
 import Api from 'api';
+import { RootState } from './store';
 
 const api = new Api();
 
-type Request = {
-  page: string;
-  limit: string;
-  sorting: string;
-  searchValue: string;
-};
-
-export const fetchCharacters = createAsyncThunk<ResponseModel, Request>(
+export const fetchCharacters = createAsyncThunk<ResponseModel, undefined, { state: RootState }>(
   'characters/fetchCharacters',
-  async function ({ page, limit, sorting, searchValue }: Request, { rejectWithValue }) {
+  async function (_, { rejectWithValue, getState }) {
     try {
-      const data = await api.getPaginatedData(page, limit, sorting, searchValue);
-      return data;
+      const { currentPage, limit, sorting, searchValue } = getState().characters;
+      return await api.getPaginatedData(currentPage, limit, sorting, searchValue);
     } catch (error) {
       if (error instanceof Error) {
         return rejectWithValue(error.message);

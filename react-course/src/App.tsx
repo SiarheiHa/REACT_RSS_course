@@ -8,16 +8,11 @@ import './App.scss';
 
 function App() {
   const dispatch = useAppDispatch();
-  const {
-    currentPage: page,
-    limit,
-    sorting,
-    searchValue,
-  } = useAppSelector((state) => state.characters);
+  const { currentPage, limit, sorting, searchValue } = useAppSelector((state) => state.characters);
 
   useEffect(() => {
-    dispatch(fetchCharacters({ page, limit, sorting, searchValue }));
-  }, [page, limit, sorting, searchValue, dispatch]);
+    dispatch(fetchCharacters());
+  }, [currentPage, limit, sorting, searchValue, dispatch]);
 
   return (
     <>
