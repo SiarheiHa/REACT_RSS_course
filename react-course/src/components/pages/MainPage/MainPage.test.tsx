@@ -1,10 +1,14 @@
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import React from 'react';
+import { renderWithProviders } from 'utils/test-utils';
 import MainPage from './MainPage';
 
 describe('MainPage', () => {
+  beforeEach(() => {
+    renderWithProviders(<MainPage />);
+  });
+
   it('MainPage renders', () => {
-    render(<MainPage />);
     expect(screen.getByText('MainPage')).toBeInTheDocument();
   });
 });

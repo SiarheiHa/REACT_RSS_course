@@ -1,8 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { CharactersStateType, ResponseModel, Sorting } from 'types/types';
+import { ResponseModel, Sorting } from 'types/types';
 import Api from 'api';
 import { RootState } from './store';
+import { initialCharactersState } from './constants';
 
 const api = new Api();
 
@@ -20,19 +21,6 @@ export const fetchCharacters = createAsyncThunk<ResponseModel, undefined, { stat
     }
   }
 );
-
-const initialCharactersState: CharactersStateType = {
-  characters: [],
-  currentPage: '1',
-  limit: '20',
-  pages: '',
-  sorting: Sorting.DEFAULT,
-  searchValue: localStorage.getItem('search') || '',
-  status: {
-    loading: false,
-    error: false,
-  },
-};
 
 const charactersSlice = createSlice({
   name: 'characters',

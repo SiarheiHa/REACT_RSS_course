@@ -1,12 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { CardData, FormData, FormStateType } from 'types/types';
-
-const initialFormState: FormStateType = {
-  cards: [],
-  inputsValues: null,
-  hasFormErrors: false,
-};
+import { CardData, FormData } from 'types/types';
+import { initialFormState } from './constants';
 
 const formSlice = createSlice({
   name: 'form',

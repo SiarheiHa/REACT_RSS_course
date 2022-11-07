@@ -1,24 +1,20 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { renderWithProviders } from '../../utils/test-utils';
 import userEvent from '@testing-library/user-event';
-// import { FormState } from 'context';
 import React from 'react';
-import { Provider } from 'react-redux';
-import { store } from 'store';
 import FormContainer from './FormContainer';
 
 describe('FormContainer', () => {
+  beforeEach(() => {
+    renderWithProviders(<FormContainer />);
+  });
+
   it('FormContainer renders', () => {
-    render(<FormContainer />);
     expect(screen.getByTestId('form-container')).toBeInTheDocument();
   });
 
   it('The card is rendered after submitting the correct form', async () => {
     global.URL.createObjectURL = jest.fn();
-    render(
-      <Provider store={store}>
-        <FormContainer />
-      </Provider>
-    );
 
     const nameInput = screen.getByLabelText('name');
     expect(nameInput).toBeInTheDocument();
